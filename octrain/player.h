@@ -9,6 +9,8 @@ public:
     int timer = 0;
     int pl_posX = 0;
     int pl_posY = 0;
+    int pl_subposX = 0; // player‚Ì‰E‰º‚ÌÀ•W
+    int pl_subposY = 0;
     int pl_speed = 0;
     int plHND = 0;
 };

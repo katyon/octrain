@@ -46,7 +46,7 @@ void title_update(void)
             nextScene = SCENE_RESULT;
         }
         //------
-        if (Input::GetInstance()->GetButtonDown(PL_1,0))
+        if (Input::GetInstance()->GetALLButtonDown(PL_1))
         {
             nextScene = SCENE_GAME;
         }

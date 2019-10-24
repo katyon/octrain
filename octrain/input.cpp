@@ -24,7 +24,8 @@ void Input::Destroy()
 
 void Input::Init()
 {
-
+    SetJoypadDeadZone(DX_INPUT_PAD1, 0.35);
+    SetJoypadDeadZone(DX_INPUT_PAD2, 0.35);
 }
 
 void Input::Updata()
@@ -46,6 +47,30 @@ void Input::Updata()
             }
             else key[j][i] = NOT;
         }
+        if (input[j].ThumbLX > 1)
+        {
+            LThumbX[j] = PLUS;
+        }
+        else if (input[j].ThumbLX < -1)
+        {
+            LThumbX[j] = MINUS;
+        }
+        else
+        {
+            LThumbX[j] = NOT;
+        }
+        if (input[j].ThumbLY > 1)
+        {
+            LThumbY[j] = PLUS;
+        }
+        else if (input[j].ThumbLY < -1)
+        {
+            LThumbY[j] = MINUS;
+        }
+        else
+        {
+            LThumbY[j] = NOT;
+        }
     }
 }
 
@@ -62,6 +87,20 @@ bool Input::GetButtonDown(PL_NUM plNum, int inputKey)
     }
 }
 
+// 押した瞬間だけTRUEを返す(全てのボタン)
+bool Input::GetALLButtonDown(PL_NUM plNum)
+{
+    for (int inputKey = 0; inputKey < 16; inputKey++)
+    {
+        if (key[plNum][inputKey] == DOWN)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 // 押している間TRUEを返す
 bool Input::GetButton(PL_NUM plNum, int inputKey)
 {
@@ -72,5 +111,39 @@ bool Input::GetButton(PL_NUM plNum, int inputKey)
     else
     {
         return false;
+    }
+}
+
+// 左スティックを倒しているX方向の値を返す
+int Input::GetLThumbX(PL_NUM plNum)
+{
+    switch (LThumbX[plNum])
+    {
+    case PLUS:
+        return 1;
+        break;
+    case MINUS:
+        return -1;
+        break;
+    case NOT:
+        return 0;
+        break;
+    }
+}
+
+// 左スティックを倒しているY方向の値を返す
+int Input::GetLThumbY(PL_NUM plNum)
+{
+    switch (LThumbY[plNum])
+    {
+    case PLUS:
+        return 1;
+        break;
+    case MINUS:
+        return -1;
+        break;
+    case NOT:
+        return 0;
+        break;
     }
 }

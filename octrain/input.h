@@ -25,16 +25,23 @@ public:
     void Updata();
     // 押した瞬間だけTRUEを返す
     bool GetButtonDown(PL_NUM playerNum, int inputKey);
+    // 押した瞬間だけTRUEを返す(全てのボタン)
+    bool GetALLButtonDown(PL_NUM plNum);
     // 押している間TRUEを返す
     bool GetButton(PL_NUM playerNum, int inputKey);
-
+    // 左スティックを倒しているX方向の値を返す
+    int GetLThumbX(PL_NUM plNum);
+    // 左スティックを倒しているY方向の値を返す
+    int GetLThumbY(PL_NUM plNum);
 
 private:
     XINPUT_STATE input[2] = {};
     int key[2][16] = {};	// 入力情報
+    int LThumbX[2] = {};
+    int LThumbY[2] = {};
     enum
     {
-        NOT, DOWN, STAY
+        NOT, DOWN, STAY, PLUS, MINUS
     };
 
 protected:

@@ -67,6 +67,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
         clsDx();
 
+        // 入力状態の更新処理
+        Input::GetInstance()->Updata();
+
         // ゲームシーン切り替え
         if (nextScene != curScene)
         {
