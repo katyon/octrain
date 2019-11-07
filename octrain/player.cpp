@@ -12,18 +12,20 @@ PLAYER player;
 
 // ä÷êîé¿ëÃ ----------------------------------------------------------------------------------------
 // èâä˙ê›íË
-void player_init(void)
+void PLAYER::init(void)
 {
     player.state = 0;
     player.timer = 0;
     player.pl_posX = 0;
     player.pl_posY = 0;
-    player.pl_speed = 5;
+    player.pl_subposX = 0;
+    player.pl_subposY = 0;
+    player.pl_speed = 10;
     player.plHND = LoadGraph("Data\\Images\\player.png");
 }
 
 // çXêVèàóù
-void player_update(void)
+void PLAYER::update(void)
 {
     // debug
     if (CheckHitKey(KEY_INPUT_LEFT) || CheckHitKey(KEY_INPUT_A))
@@ -43,16 +45,55 @@ void player_update(void)
         player.pl_posY += player.pl_speed;
     }
     //--------
+
+    // à⁄ìÆ
+    if (Input::GetInstance()->GetLThumbX(PL_1) < 0)
+    {
+        player.pl_posX -= player.pl_speed;
+    }
+    if (Input::GetInstance()->GetLThumbX(PL_1) > 0)
+    {
+        player.pl_posX += player.pl_speed;
+    }
+    if (Input::GetInstance()->GetLThumbY(PL_1) > 0)
+    {
+        player.pl_posY -= player.pl_speed;
+    }
+    if (Input::GetInstance()->GetLThumbY(PL_1) < 0)
+    {
+        player.pl_posY += player.pl_speed;
+    }
+
+    // à⁄ìÆêßå¿
+    if (player.pl_posX < 0)
+    {
+        player.pl_posX = 0;
+    }
+    if (player.pl_posX > GAME_SCREEN_WIDTH - 200 + 1)
+    {
+        player.pl_posX = GAME_SCREEN_WIDTH - 200 + 1;
+    }
+    if (player.pl_posY < 0)
+    {
+        player.pl_posY = 0;
+    }
+    if (player.pl_posY > GAME_SCREEN_HEIGHT - 320 + 1)
+    {
+        player.pl_posY = GAME_SCREEN_HEIGHT - 320 + 1;
+    }
+
+    player.pl_subposX = player.pl_posX + 200 - 1;
+    player.pl_subposY = player.pl_posY + 320 - 1;
 }
 
 // ï`âÊèàóù
-void player_draw(void)
+void PLAYER::draw(void)
 {
-    DrawGraph(player.pl_posX, player.pl_posY, player.plHND, true);
+    DrawExtendGraph(player.pl_posX, player.pl_posY, player.pl_subposX, player.pl_subposY, player.plHND, true);
 }
 
 // èIóπèàóù
-void player_end(void)
+void PLAYER::end(void)
 {
     DeleteGraph(player.plHND);
 }
