@@ -47,11 +47,11 @@ void Input::Updata()
             }
             else key[j][i] = NOT;
         }
-        if (input[j].ThumbLX > 1)
+        if (input[j].ThumbLX > 7500)
         {
             LThumbX[j] = PLUS;
         }
-        else if (input[j].ThumbLX < -1)
+        else if (input[j].ThumbLX < -7500)
         {
             LThumbX[j] = MINUS;
         }
@@ -59,11 +59,11 @@ void Input::Updata()
         {
             LThumbX[j] = NOT;
         }
-        if (input[j].ThumbLY > 1)
+        if (input[j].ThumbLY > 7500)
         {
             LThumbY[j] = PLUS;
         }
-        else if (input[j].ThumbLY < -1)
+        else if (input[j].ThumbLY < -7500)
         {
             LThumbY[j] = MINUS;
         }

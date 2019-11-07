@@ -12,7 +12,7 @@ PLAYER player;
 
 // ŠÖ”À‘Ì ----------------------------------------------------------------------------------------
 // ‰Šúİ’è
-void player_init(void)
+void PLAYER::init(void)
 {
     player.state = 0;
     player.timer = 0;
@@ -25,7 +25,7 @@ void player_init(void)
 }
 
 // XVˆ—
-void player_update(void)
+void PLAYER::update(void)
 {
     // debug
     if (CheckHitKey(KEY_INPUT_LEFT) || CheckHitKey(KEY_INPUT_A))
@@ -87,13 +87,13 @@ void player_update(void)
 }
 
 // •`‰æˆ—
-void player_draw(void)
+void PLAYER::draw(void)
 {
     DrawExtendGraph(player.pl_posX, player.pl_posY, player.pl_subposX, player.pl_subposY, player.plHND, true);
 }
 
 // I—¹ˆ—
-void player_end(void)
+void PLAYER::end(void)
 {
     DeleteGraph(player.plHND);
 }

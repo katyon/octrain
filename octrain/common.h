@@ -7,7 +7,7 @@
 
 enum SCENE_CASE
 {
-    SCENE_TITLE,SCENE_GAME, SCENE_RESULT
+    SCENE_TITLE, SCENE_GAME, SCENE_RESULT
 };
 
 enum STATE
@@ -24,4 +24,9 @@ class COMMON
 {
 public:
     int font;
+    static int curScene;
+    static int nextScene;
+
+private:
+
 };
