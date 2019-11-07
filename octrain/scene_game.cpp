@@ -7,26 +7,24 @@
 #include "scene_game.h"
 
 // 変数 --------------------------------------------------------------------------------------------
-// シーン遷移用変数
-extern int nextScene;
 
 // インスタンス宣言 ---------------------------------------------------------------------------------
 GAME game;
 
-
 // 関数実体 ----------------------------------------------------------------------------------------
 // 初期設定
-void game_init(void)
+void GAME::init(void)
 {
     game.state = 0;
     game.timer = 0;
     game.bgHND = LoadGraph("Data\\Images\\game_bg.png");
+    game.brackHND = LoadGraph("Data\\Images\\brack.png");
 
-    player_init();
+    PLAYER::init();
 }
 
 // 更新処理
-void game_update(void)
+void GAME::update(void)
 {
     switch (game.state)
     {
@@ -38,35 +36,39 @@ void game_update(void)
         // debug
         if (CheckHitKey(KEY_INPUT_1))
         {
-            nextScene = SCENE_TITLE;
+            COMMON::nextScene = SCENE_TITLE;
         }
         if (CheckHitKey(KEY_INPUT_2))
         {
-            nextScene = SCENE_GAME;
+            COMMON::nextScene = SCENE_GAME;
         }
         if (CheckHitKey(KEY_INPUT_3))
         {
-            nextScene = SCENE_RESULT;
+            COMMON::nextScene = SCENE_RESULT;
         }
         //------
 
-        player_update();
+        PLAYER::update();
         break;
     }
 }
 
 // 描画処理
-void game_draw(void)
+void GAME::draw(void)
 {
     DrawGraph(0, 0, game.bgHND, true);
+    SetDrawBlendMode(DX_BLENDMODE_ALPHA, 150);
+    DrawGraph(0, 0, game.brackHND, true);
+    SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-    player_draw();
+    PLAYER::draw();
 }
 
 // 終了処理
-void game_end(void)
+void GAME::end(void)
 {
     DeleteGraph(game.bgHND);
+    DeleteGraph(game.brackHND);
 
-    player_end();
+    PLAYER::end();
 }

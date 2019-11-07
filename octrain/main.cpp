@@ -8,15 +8,11 @@
 #include "scene_result.h"
 #include "scene_title.h"
 
-// 変数 --------------------------------------------------------------------------------------------
-// シーン切り替え用変数
-int curScene;
-int nextScene;
-
-
 // インスタンス宣言 ---------------------------------------------------------------------------------
 COMMON common;
 
+int COMMON::curScene = 0;
+int COMMON::nextScene = 0;
 // WinMain -----------------------------------------------------------------------------------------
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -33,21 +29,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     SetBackgroundColor(0, 0, 0);
 
     // ウインドウのタイトルを設定
-    SetMainWindowText("test");
+    SetMainWindowText("octrain");
 
     // ブレンドモードの設定(ノーブレンド)
     SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
     // ゲームシーンの設定
-    curScene = SCENE_TITLE;
-    nextScene = SCENE_TITLE;
+    COMMON::curScene = SCENE_TITLE;
+    COMMON::nextScene = SCENE_TITLE;
 
     // ライブラリの初期化
     if (DxLib_Init() < 0)
         return -1;
 
     // タイトルの初期設定
-    title_init();
+    TITLE::init();
 
     // フォントデータの読み込み
     common.font = CreateFontToHandle("GauFontLoveRocketNeo", 70, 1, DX_FONTTYPE_ANTIALIASING);
@@ -67,70 +63,73 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
         clsDx();
 
+        // 入力状態の更新処理
+        Input::GetInstance()->Updata();
+
         // ゲームシーン切り替え
-        if (nextScene != curScene)
+        if (COMMON::nextScene != COMMON::curScene)
         {
             // 現シーンの終了処理を行う
 #pragma region NowEnd
-            switch (curScene)
+            switch (COMMON::curScene)
             {
             case SCENE_TITLE:
-                title_end();
+                TITLE::end();
                 break;
             case SCENE_GAME:
-                game_end();
+                GAME::end();
                 break;
             case SCENE_RESULT:
-                result_end();
+                RESULT::end();
                 break;
             }
 #pragma endregion
             // 次シーンの初期化を行う
 #pragma region NextInitialize
-            switch (nextScene)
+            switch (COMMON::nextScene)
             {
             case SCENE_TITLE:
-                title_init();
+                TITLE::init();
                 break;
             case SCENE_GAME:
-                game_init();
+                GAME::init();
                 break;
             case SCENE_RESULT:
-                result_init();
+                RESULT::init();
                 break;
             }
 #pragma endregion
-            curScene = nextScene;
+            COMMON::curScene = COMMON::nextScene;
         }
 
         // 現在のシーンの更新処理
 #pragma region NowUpdate
-        switch (curScene)
+        switch (COMMON::curScene)
         {
         case SCENE_TITLE:
-            title_update();
+            TITLE::update();
             break;
         case SCENE_GAME:
-            game_update();
+            GAME::update();
             break;
         case SCENE_RESULT:
-            result_update();
+            RESULT::update();
             break;
         }
 #pragma endregion
 
         // 現在のシーンの描画処理
 #pragma region NowDraw
-        switch (curScene)
+        switch (COMMON::curScene)
         {
         case SCENE_TITLE:
-            title_draw();
+            TITLE::draw();
             break;
         case SCENE_GAME:
-            game_draw();
+            GAME::draw();
             break;
         case SCENE_RESULT:
-            result_draw();
+            RESULT::draw();
             break;
         }
 #pragma endregion
@@ -141,16 +140,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     // 現在のシーンの終了処理
 #pragma region NowEnd
-    switch (curScene)
+    switch (COMMON::curScene)
     {
     case SCENE_TITLE:
-        title_end();
+        TITLE::end();
         break;
     case SCENE_GAME:
-        game_end();
+        GAME::end();
         break;
     case SCENE_RESULT:
-        result_end();
+        RESULT::end();
         break;
     }
 #pragma endregion

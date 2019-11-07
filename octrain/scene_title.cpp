@@ -6,16 +6,13 @@
 #include "scene_title.h"
 
 // 変数 --------------------------------------------------------------------------------------------
-// シーン遷移用変数
-extern int nextScene;
 
 // インスタンス宣言 ---------------------------------------------------------------------------------
 TITLE title;
 
-
 // 関数実体 ----------------------------------------------------------------------------------------
 // 初期設定
-void title_init(void)
+void TITLE::init(void)
 {
     title.state = 0;
     title.timer = 0;
@@ -23,7 +20,7 @@ void title_init(void)
 }
 
 // 更新処理
-void title_update(void)
+void TITLE::update(void)
 {
     switch (title.state)
     {
@@ -35,33 +32,33 @@ void title_update(void)
         // debug
         if (CheckHitKey(KEY_INPUT_1))
         {
-            nextScene = SCENE_TITLE;
+            COMMON::nextScene = SCENE_TITLE;
         }
         if (CheckHitKey(KEY_INPUT_2))
         {
-            nextScene = SCENE_GAME;
+            COMMON::nextScene = SCENE_GAME;
         }
         if (CheckHitKey(KEY_INPUT_3))
         {
-            nextScene = SCENE_RESULT;
+            COMMON::nextScene = SCENE_RESULT;
         }
         //------
-        if (Input::GetInstance()->GetButtonDown(PL_1,0))
+        if (Input::GetInstance()->GetALLButtonDown(PL_1))
         {
-            nextScene = SCENE_GAME;
+            COMMON::nextScene = SCENE_GAME;
         }
         break;
     }
 }
 
 // 描画処理
-void title_draw(void)
+void TITLE::draw(void)
 {
     DrawGraph(0, 0, title.bgHND, true);
 }
 
 // 終了処理
-void title_end(void)
+void TITLE::end(void)
 {
     DeleteGraph(title.bgHND);
 }
