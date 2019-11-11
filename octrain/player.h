@@ -1,5 +1,7 @@
 #pragma once
 // 定数 ----------------------------------------------------------------
+#define PL_WIDTH    (200)
+#define PL_HEIGHT   (300)
 
 // クラス --------------------------------------------------------------
 class PLAYER
@@ -12,11 +14,10 @@ public:
 
 private:
     int state = 0;
-    int timer = 0;
-    int pl_posX = 0;
-    int pl_posY = 0;
-    int pl_subposX = 0; // playerの右下の座標
-    int pl_subposY = 0;
-    int pl_speed = 0;
-    int plHND = 0;
+    int posX = 0;
+    int posY = 0;
+    int sub_posX = 0; // playerの右下の座標
+    int sub_posY = 0;
+    int speed = 0;
+    int plHND[4] = { 0 };
 };

@@ -23,9 +23,9 @@ enum PL_NUM
 class COMMON
 {
 public:
-    int font;
     static int curScene;
     static int nextScene;
+    int font;
 
 private:
 

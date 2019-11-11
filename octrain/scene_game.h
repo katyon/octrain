@@ -5,14 +5,16 @@
 class GAME
 {
 public:
+    static int timer;
+
     static void init(void);      // ‰Šúİ’è
     static void update(void);    // XVˆ—
     static void draw(void);      // •`‰æˆ—
     static void end(void);       // I—¹ˆ—
+    static bool hitcheck_rect(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh);
+    static bool hitcheck_circle(int ax, int ay, int ar, int bx, int by, int br);
 
 private:
     int state = 0;
-    int timer = 0;
     int bgHND = 0;
-    int brackHND = 0;
 };

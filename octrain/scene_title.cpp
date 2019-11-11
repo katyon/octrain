@@ -55,6 +55,14 @@ void TITLE::update(void)
 void TITLE::draw(void)
 {
     DrawGraph(0, 0, title.bgHND, true);
+
+    // debug-----------
+    unsigned int  Cr = GetColor(200, 0, 0);
+    DrawFormatString(0, 0, Cr, "タイトル:1");
+    DrawFormatString(0, 20, Cr, "ゲーム:2");
+    DrawFormatString(0, 40, Cr, "リザルト:3");
+
+    //-----------------
 }
 
 // 終了処理

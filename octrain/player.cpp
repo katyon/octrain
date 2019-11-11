@@ -4,6 +4,7 @@
 #include "common.h"
 #include "input.h"
 #include "player.h"
+#include "scene_game.h"
 
 // ïœêî --------------------------------------------------------------------------------------------
 
@@ -15,85 +16,95 @@ PLAYER player;
 void PLAYER::init(void)
 {
     player.state = 0;
-    player.timer = 0;
-    player.pl_posX = 0;
-    player.pl_posY = 0;
-    player.pl_subposX = 0;
-    player.pl_subposY = 0;
-    player.pl_speed = 10;
-    player.plHND = LoadGraph("Data\\Images\\player.png");
+    player.posX = 0;
+    player.posY = 0;
+    player.sub_posX = 0;
+    player.sub_posY = 0;
+    player.speed = 10;
+    LoadDivGraph("Data\\Images\\player.png",4,4,1,100,150,player.plHND);
 }
 
 // çXêVèàóù
 void PLAYER::update(void)
 {
-    // debug
+    // debug--------------------------------------------------------
     if (CheckHitKey(KEY_INPUT_LEFT) || CheckHitKey(KEY_INPUT_A))
     {
-        player.pl_posX -= player.pl_speed;
+        player.posX -= player.speed;
     }
     if (CheckHitKey(KEY_INPUT_RIGHT) || CheckHitKey(KEY_INPUT_D))
     {
-        player.pl_posX += player.pl_speed;
+        player.posX += player.speed;
     }
     if (CheckHitKey(KEY_INPUT_UP) || CheckHitKey(KEY_INPUT_W))
     {
-        player.pl_posY -= player.pl_speed;
+        player.posY -= player.speed;
     }
     if (CheckHitKey(KEY_INPUT_DOWN) || CheckHitKey(KEY_INPUT_S))
     {
-        player.pl_posY += player.pl_speed;
+        player.posY += player.speed;
     }
-    //--------
+    //----------------------------------------------------------------
 
     // à⁄ìÆ
     if (Input::GetInstance()->GetLThumbX(PL_1) < 0)
     {
-        player.pl_posX -= player.pl_speed;
+        player.posX -= player.speed;
     }
     if (Input::GetInstance()->GetLThumbX(PL_1) > 0)
     {
-        player.pl_posX += player.pl_speed;
+        player.posX += player.speed;
     }
     if (Input::GetInstance()->GetLThumbY(PL_1) > 0)
     {
-        player.pl_posY -= player.pl_speed;
+        player.posY -= player.speed;
     }
     if (Input::GetInstance()->GetLThumbY(PL_1) < 0)
     {
-        player.pl_posY += player.pl_speed;
+        player.posY += player.speed;
     }
 
     // à⁄ìÆêßå¿
-    if (player.pl_posX < 0)
+    if (player.posX < 0)
     {
-        player.pl_posX = 0;
+        player.posX = 0;
     }
-    if (player.pl_posX > GAME_SCREEN_WIDTH - 200 + 1)
+    if (player.posX > GAME_SCREEN_WIDTH - PL_WIDTH + 1)
     {
-        player.pl_posX = GAME_SCREEN_WIDTH - 200 + 1;
+        player.posX = GAME_SCREEN_WIDTH - PL_WIDTH + 1;
     }
-    if (player.pl_posY < 0)
+    if (player.posY < 0)
     {
-        player.pl_posY = 0;
+        player.posY = 0;
     }
-    if (player.pl_posY > GAME_SCREEN_HEIGHT - 320 + 1)
+    if (player.posY > GAME_SCREEN_HEIGHT - PL_HEIGHT + 1)
     {
-        player.pl_posY = GAME_SCREEN_HEIGHT - 320 + 1;
+        player.posY = GAME_SCREEN_HEIGHT - PL_HEIGHT + 1;
     }
 
-    player.pl_subposX = player.pl_posX + 200 - 1;
-    player.pl_subposY = player.pl_posY + 320 - 1;
+    player.sub_posX = player.posX + PL_WIDTH - 1;
+    player.sub_posY = player.posY + PL_HEIGHT - 1;
 }
 
 // ï`âÊèàóù
 void PLAYER::draw(void)
 {
-    DrawExtendGraph(player.pl_posX, player.pl_posY, player.pl_subposX, player.pl_subposY, player.plHND, true);
+    DrawExtendGraph(player.posX, player.posY, player.sub_posX, player.sub_posY, player.plHND[GAME::timer / 4 % 4], true);
+
+    // debug------------------------
+    if (GAME::hitcheck_rect(player.posX, player.posY, PL_WIDTH, PL_HEIGHT, 0, 0, 100, 100))
+    {
+        DrawFormatString(200, 0, GetColor(200, 0, 0), "hitcheck_rect:true");
+    }
+    else
+    {
+        DrawFormatString(200, 0, GetColor(200, 0, 0), "hitcheck_rect:false");
+    }
+    //---------------------------
 }
 
 // èIóπèàóù
 void PLAYER::end(void)
 {
-    DeleteGraph(player.plHND);
+    for (int i = 0; i < 4; i++)DeleteGraph(player.plHND[i]);
 }
