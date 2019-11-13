@@ -88,6 +88,7 @@ bool GAME::hitcheck_rect(int ax, int ay, int aw, int ah, int bx, int by, int bw,
     return false;
 }
 
+
 bool GAME::hitcheck_circle(int ax, int ay, int ar, int bx, int by, int br)
 {
     float a = ax - bx;
