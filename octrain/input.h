@@ -1,7 +1,14 @@
 #pragma once
 #include "Common.h"
 // 定数 ----------------------------------------------------------------
-
+enum THUMB
+{
+    Not,
+    Up, Before_Upper_Right, Upper_Right, After_Upper_Right,
+    Right, Before_Lower_Right, Lower_Right, After_Lower_Right,
+    Down, Before_Lower_Left, Lower_Left, After_Lower_Left,
+    Left, Before_Upper_Left, Upper_Left, After_Upper_Left,
+};
 
 /// InputClass How to
 // 1.Input.hをインクルードする
@@ -29,19 +36,23 @@ public:
     bool GetALLButtonDown(PL_NUM plNum);
     // 押している間TRUEを返す
     bool GetButton(PL_NUM playerNum, int inputKey);
-    // 左スティックを倒しているX方向の値を返す
-    int GetLThumbX(PL_NUM plNum);
-    // 左スティックを倒しているY方向の値を返す
-    int GetLThumbY(PL_NUM plNum);
+    // 左スティックを倒している方向の値を返す
+    bool GetLeftThumb(PL_NUM plNum, int  LeftThumb);
 
 private:
     XINPUT_STATE input[2] = {};
     int key[2][16] = {};	// 入力情報
-    int LThumbX[2] = {};
-    int LThumbY[2] = {};
-    enum
+    int ThumbLX[2] = {};
+    int ThumbLY[2] = {};
+    int ThumbRX[2] = {};
+    int ThumbRY[2] = {};
+    enum BUTTON_STATE
     {
-        NOT, DOWN, STAY, PLUS, MINUS
+        Not, Down, Stay
+    };
+    enum THUMB_STATE
+    {
+        Zero, Mid, Max
     };
 
 protected:

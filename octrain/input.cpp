@@ -40,44 +40,97 @@ void Input::Updata()
         {
             if (input[j].Buttons[i])
             {
-                if (key[j][i] == NOT)
-                    key[j][i] = DOWN;
-                else if (key[j][i] == DOWN)
-                    key[j][i] = STAY;
+                if (key[j][i] == Not)
+                    key[j][i] = Down;
+                else if (key[j][i] == Down)
+                    key[j][i] = Stay;
             }
-            else key[j][i] = NOT;
+            else key[j][i] = Not;
         }
-        if (input[j].ThumbLX > 7500)
+#pragma region Thumb
+        if (input[j].ThumbLX > 0)
         {
-            LThumbX[j] = PLUS;
+            if (input[j].ThumbLX < 8000)
+                ThumbLX[j] = Not;
+            else if (input[j].ThumbLX < 20000)
+                ThumbLX[j] = Mid;
+            else if (input[j].ThumbLX < 35000)
+                ThumbLX[j] = Max;
         }
-        else if (input[j].ThumbLX < -7500)
+        if (input[j].ThumbLX < 0)
         {
-            LThumbX[j] = MINUS;
+            if (input[j].ThumbLX > -8000)
+                ThumbLX[j] = Not;
+            else if (input[j].ThumbLX > -20000)
+                ThumbLX[j] = -Mid;
+            else if (input[j].ThumbLX > -35000)
+                ThumbLX[j] = -Max;
         }
-        else
+
+        if (input[j].ThumbLY > 0)
         {
-            LThumbX[j] = NOT;
+            if (input[j].ThumbLY < 8000)
+                ThumbLY[j] = Not;
+            else if (input[j].ThumbLY < 20000)
+                ThumbLY[j] = Mid;
+            else if (input[j].ThumbLY < 35000)
+                ThumbLY[j] = Max;
         }
-        if (input[j].ThumbLY > 7500)
+        if (input[j].ThumbLY < 0)
         {
-            LThumbY[j] = PLUS;
+            if (input[j].ThumbLY > -8000)
+                ThumbLY[j] = Not;
+            else if (input[j].ThumbLY > -20000)
+                ThumbLY[j] = -Mid;
+            else if (input[j].ThumbLY > -35000)
+                ThumbLY[j] = -Max;
         }
-        else if (input[j].ThumbLY < -7500)
+
+        if (input[j].ThumbRX > 0)
         {
-            LThumbY[j] = MINUS;
+            if (input[j].ThumbRX < 8000)
+                ThumbRX[j] = Not;
+            else if (input[j].ThumbRX < 20000)
+                ThumbRX[j] = Mid;
+            else if (input[j].ThumbRX < 35000)
+                ThumbRX[j] = Max;
         }
-        else
+        if (input[j].ThumbRX < 0)
         {
-            LThumbY[j] = NOT;
+            if (input[j].ThumbRX > -8000)
+                ThumbRX[j] = Not;
+            else if (input[j].ThumbRX > -20000)
+                ThumbRX[j] = -Mid;
+            else if (input[j].ThumbRX > -35000)
+                ThumbRX[j] = -Max;
         }
+
+        if (input[j].ThumbRY > 0)
+        {
+            if (input[j].ThumbRY < 8000)
+                ThumbRY[j] = Not;
+            else if (input[j].ThumbRY < 20000)
+                ThumbRY[j] = Mid;
+            else if (input[j].ThumbRY < 35000)
+                ThumbRY[j] = Max;
+        }
+        if (input[j].ThumbRY < 0)
+        {
+            if (input[j].ThumbRY > -8000)
+                ThumbRY[j] = Not;
+            else if (input[j].ThumbRY > -20000)
+                ThumbRY[j] = -Mid;
+            else if (input[j].ThumbRY > -35000)
+                ThumbRY[j] = -Max;
+        }
+#pragma endregion
     }
 }
 
 // 押した瞬間だけTRUEを返す
 bool Input::GetButtonDown(PL_NUM plNum, int inputKey)
 {
-    if (key[plNum][inputKey] == DOWN)
+    if (key[plNum][inputKey] == Down)
     {
         return true;
     }
@@ -92,7 +145,7 @@ bool Input::GetALLButtonDown(PL_NUM plNum)
 {
     for (int inputKey = 0; inputKey < 16; inputKey++)
     {
-        if (key[plNum][inputKey] == DOWN)
+        if (key[plNum][inputKey] == Down)
         {
             return true;
         }
@@ -104,7 +157,7 @@ bool Input::GetALLButtonDown(PL_NUM plNum)
 // 押している間TRUEを返す
 bool Input::GetButton(PL_NUM plNum, int inputKey)
 {
-    if (key[plNum][inputKey] == STAY || key[plNum][inputKey] == DOWN)
+    if (key[plNum][inputKey] == Stay || key[plNum][inputKey] == Down)
     {
         return true;
     }
@@ -114,36 +167,79 @@ bool Input::GetButton(PL_NUM plNum, int inputKey)
     }
 }
 
-// 左スティックを倒しているX方向の値を返す
-int Input::GetLThumbX(PL_NUM plNum)
+// 左スティックを倒している方向の値を返す
+bool Input::GetLeftThumb(PL_NUM plNum, int  Thumb)
 {
-    switch (LThumbX[plNum])
+    switch (Thumb)
     {
-    case PLUS:
-        return 1;
+    case THUMB::Not:
+        if (ThumbLX[plNum] == Input::THUMB_STATE::Zero && ThumbLY[plNum] == Input::THUMB_STATE::Zero)
+            return true;
         break;
-    case MINUS:
-        return -1;
+    case THUMB::Up:
+        if (ThumbLX[plNum] == Input::THUMB_STATE::Zero && ThumbLY[plNum] == Input::THUMB_STATE::Max)
+            return true;
         break;
-    case NOT:
-        return 0;
+    case THUMB::Before_Upper_Right:
+        if (ThumbLX[plNum] == Input::THUMB_STATE::Mid && ThumbLY[plNum] == Input::THUMB_STATE::Max)
+            return true;
+        break;
+    case THUMB::Upper_Right:
+        if (ThumbLX[plNum] == Input::THUMB_STATE::Max && ThumbLY[plNum] == Input::THUMB_STATE::Max)
+            return true;
+        break;
+    case THUMB::After_Upper_Right:
+        if (ThumbLX[plNum] == Input::THUMB_STATE::Max && ThumbLY[plNum] == Input::THUMB_STATE::Mid)
+            return true;
+        break;
+    case THUMB::Right:
+        if (ThumbLX[plNum] == Input::THUMB_STATE::Max && ThumbLY[plNum] == Input::THUMB_STATE::Zero)
+            return true;
+        break;
+    case THUMB::Before_Lower_Right:
+        if (ThumbLX[plNum] == Input::THUMB_STATE::Max && ThumbLY[plNum] == -Input::THUMB_STATE::Mid)
+            return true;
+        break;
+    case THUMB::Lower_Right:
+        if (ThumbLX[plNum] == Input::THUMB_STATE::Max && ThumbLY[plNum] == -Input::THUMB_STATE::Max)
+            return true;
+        break;
+    case THUMB::After_Lower_Right:
+        if (ThumbLX[plNum] == Input::THUMB_STATE::Mid && ThumbLY[plNum] == -Input::THUMB_STATE::Max)
+            return true;
+        break;
+    case THUMB::Down:
+        if (ThumbLX[plNum] == Input::THUMB_STATE::Zero && ThumbLY[plNum] == -Input::THUMB_STATE::Max)
+            return true;
+        break;
+    case THUMB::Before_Lower_Left:
+        if (ThumbLX[plNum] == -Input::THUMB_STATE::Mid && ThumbLY[plNum] == -Input::THUMB_STATE::Max)
+            return true;
+        break;
+    case THUMB::Lower_Left:
+        if (ThumbLX[plNum] == -Input::THUMB_STATE::Max && ThumbLY[plNum] == -Input::THUMB_STATE::Max)
+            return true;
+        break;
+    case THUMB::After_Lower_Left:
+        if (ThumbLX[plNum] == -Input::THUMB_STATE::Max && ThumbLY[plNum] == -Input::THUMB_STATE::Mid)
+            return true;
+        break;
+    case THUMB::Left:
+        if (ThumbLX[plNum] == -Input::THUMB_STATE::Max && ThumbLY[plNum] == Input::THUMB_STATE::Zero)
+            return true;
+        break;
+    case THUMB::Before_Upper_Left:
+        if (ThumbLX[plNum] == -Input::THUMB_STATE::Max && ThumbLY[plNum] == Input::THUMB_STATE::Mid)
+            return true;
+        break;
+    case THUMB::Upper_Left:
+        if (ThumbLX[plNum] == -Input::THUMB_STATE::Max && ThumbLY[plNum] == Input::THUMB_STATE::Max)
+            return true;
+        break;
+    case THUMB::After_Upper_Left:
+        if (ThumbLX[plNum] == -Input::THUMB_STATE::Mid && ThumbLY[plNum] == Input::THUMB_STATE::Max)
+            return true;
         break;
     }
-}
-
-// 左スティックを倒しているY方向の値を返す
-int Input::GetLThumbY(PL_NUM plNum)
-{
-    switch (LThumbY[plNum])
-    {
-    case PLUS:
-        return 1;
-        break;
-    case MINUS:
-        return -1;
-        break;
-    case NOT:
-        return 0;
-        break;
-    }
+    return false;
 }
