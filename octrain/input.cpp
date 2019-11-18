@@ -24,8 +24,7 @@ void Input::Destroy()
 
 void Input::Init()
 {
-    SetJoypadDeadZone(DX_INPUT_PAD1, 0.35);
-    SetJoypadDeadZone(DX_INPUT_PAD2, 0.35);
+
 }
 
 void Input::Updata()

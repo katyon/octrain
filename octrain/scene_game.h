@@ -6,6 +6,7 @@ class GAME
 {
 public:
     static int timer;
+    static bool zoom_mode;  // trueでズーム
 
     static void init(void);      // 初期設定
     static void update(void);    // 更新処理

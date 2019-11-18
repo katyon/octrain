@@ -8,18 +8,17 @@
 
 #include <math.h>
 
-// 変数 --------------------------------------------------------------------------------------------
-
 // インスタンス宣言 ---------------------------------------------------------------------------------
 GAME game;
 
 int GAME::timer = 0;
+bool GAME::zoom_mode = false;
 // 関数実体 ----------------------------------------------------------------------------------------
 // 初期設定
 void GAME::init(void)
 {
+    GAME::timer = 0;
     game.state = 0;
-    game.timer = 0;
     game.bgHND = LoadGraph("Data\\Images\\game_bg.png");
 
     PLAYER::init();
@@ -38,7 +37,7 @@ void GAME::update(void)
 
         PLAYER::update();
 
-        game.timer++;
+        GAME::timer++;
         // debug
         if (CheckHitKey(KEY_INPUT_1))
         {
@@ -52,6 +51,13 @@ void GAME::update(void)
         {
             COMMON::nextScene = SCENE_RESULT;
         }
+        if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_DPAD_UP))
+        {
+            if (GAME::zoom_mode == false)
+                GAME::zoom_mode = true;
+            else
+                GAME::zoom_mode = false;
+        }
         //------
         break;
     }
@@ -63,11 +69,13 @@ void GAME::draw(void)
     DrawGraph(0, 0, game.bgHND, true);
 
     PLAYER::draw();
+
     // debug-----------
     unsigned int  Cr = GetColor(200, 0, 0);
     DrawFormatString(0, 0, Cr, "タイトル:1");
     DrawFormatString(0, 20, Cr, "ゲーム:2");
     DrawFormatString(0, 40, Cr, "リザルト:3");
+    DrawFormatString(100, 20, Cr, "zoom_mode:%d", game.zoom_mode);
     //-----------------
 }
 

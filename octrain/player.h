@@ -14,10 +14,22 @@ public:
 
 private:
     int state = 0;
-    int posX = 0;
-    int posY = 0;
-    int sub_posX = 0; // playerの右下の座標
-    int sub_posY = 0;
-    int speed = 0;
+    float posX = 0;
+    float posY = 0;
+    float sub_posX = 0; // playerの右下の座標
+    float sub_posY = 0;
+    float pivot_posX = 0; // playerの中心座標
+    float pivot_posY = 0;
+    float speed = 0;
+    int init_hp = 0;
+    int hp = 0;
+    int sub_hp = 0;
+    int init_bullet = 0;
+    int bullet = 0;
+    int power = 0;
     int plHND[4] = { 0 };
+    int bulletHND = 0;
+    int hpHND = 0;
+    int sub_hpHND = 0;
+    int zoomHND = 0;
 };
