@@ -4,6 +4,8 @@
 #include "common.h"
 #include "input.h"
 #include "player.h"
+#include "boss.h"
+#include "shot.h"
 #include "scene_game.h"
 
 // ïœêî --------------------------------------------------------------------------------------------
@@ -21,6 +23,8 @@ void GAME::init(void)
     game.brackHND = LoadGraph("Data\\Images\\brack.png");
 
     PLAYER::init();
+    BOSS::init();
+    BULLET::init();
 }
 
 // çXêVèàóù
@@ -49,6 +53,8 @@ void GAME::update(void)
         //------
 
         PLAYER::update();
+        BOSS::update();
+        BULLET::update();
         break;
     }
 }
@@ -62,6 +68,8 @@ void GAME::draw(void)
     SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
     PLAYER::draw();
+    BOSS::draw();
+    BULLET::draw();
 }
 
 // èIóπèàóù
@@ -71,4 +79,6 @@ void GAME::end(void)
     DeleteGraph(game.brackHND);
 
     PLAYER::end();
+    BOSS::end();
+    BULLET::end();
 }
