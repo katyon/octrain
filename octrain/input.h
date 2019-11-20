@@ -40,6 +40,8 @@ public:
     bool GetButton(PL_NUM playerNum, int inputKey);
     // 左スティックを倒している方向の値を返す
     bool GetLeftThumb(PL_NUM plNum, int  LeftThumb);
+    // 右スティックを倒している方向の値を返す
+    bool GetRightThumb(PL_NUM plNum, int  RightThumb);
 
 private:
     XINPUT_STATE input[2] = {};

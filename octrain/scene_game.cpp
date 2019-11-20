@@ -16,13 +16,7 @@ GAME game;
 int GAME::timer = 0;
 int GAME::spriteHND = 0;
 bool GAME::zoom_mode = false;
-// debug ------------
-#define BOSS_WIDTH    (240)
-#define BOSS_HEIGHT   (332)
-float boss_posX = 0;
-float boss_posY = 0;
-float boss_speed = 10;
-// ------------------
+
 // 関数実体 ----------------------------------------------------------------------------------------
 // 初期設定
 void GAME::init(void)
@@ -49,7 +43,8 @@ void GAME::update(void)
         break;
     case UPDATE:
         PLAYER::update();
-
+        BOSS::update();
+        BULLET::update();
         // debug ------------------------------------------
         if (CheckHitKey(KEY_INPUT_1))
         {
@@ -63,34 +58,46 @@ void GAME::update(void)
         {
             COMMON::nextScene = SCENE_RESULT;
         }
-        if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_DPAD_UP) || CheckHitKey(KEY_INPUT_Z))
+        if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_DPAD_UP))
         {
             if (game.zoom_mode == false)
                 game.zoom_mode = true;
             else
                 game.zoom_mode = false;
         }
-        if (CheckHitKey(KEY_INPUT_LEFT))
-        {
-            boss_posX -= boss_speed;
-        }
-        if (CheckHitKey(KEY_INPUT_RIGHT))
-        {
-            boss_posX += boss_speed;
-        }
-        if (CheckHitKey(KEY_INPUT_UP))
-        {
-            boss_posY -= boss_speed;
-        }
-        if (CheckHitKey(KEY_INPUT_DOWN))
-        {
-            boss_posY += boss_speed;
-        }
         //---------------------------------------------
-        if (PLAYER::detect_hit == false && GAME::hitcheck_rect(PLAYER::posX, PLAYER::posY, PL_WIDTH, PL_HEIGHT, boss_posX, boss_posY, BOSS_WIDTH, BOSS_HEIGHT) == true)
+        if (PLAYER::detect_reverse == true)
         {
-            PLAYER::detect_hit = true;
-            PLAYER::hp -= 50;
+            if (PLAYER::detect_hit == false && GAME::hitcheck_rect(PLAYER::posX + 88, PLAYER::posY + 52, 128, 248, BOSS::posX, BOSS::posY, BOSS_WIDTH, BOSS_HEIGHT) == true)
+            {
+                PLAYER::detect_hit = true;
+                PLAYER::hp -= 50;
+            }
+            if (GAME::hitcheck_rect(PLAYER::posX + 88, PLAYER::posY + 52, 128 + CLOSE_RANGE, 248, BOSS::posX, BOSS::posY, BOSS_WIDTH, BOSS_HEIGHT) == true)
+            {
+                PLAYER::detect_closerange = true;
+            }
+            else
+            {
+                PLAYER::detect_closerange = false;
+            }
+
+        }
+        else
+        {
+            if (PLAYER::detect_hit == false && GAME::hitcheck_rect(PLAYER::posX + 24, PLAYER::posY + 52, 128, 248, BOSS::posX, BOSS::posY, BOSS_WIDTH, BOSS_HEIGHT) == true)
+            {
+                PLAYER::detect_hit = true;
+                PLAYER::hp -= 50;
+            }
+            if (GAME::hitcheck_rect(PLAYER::posX + 24 - CLOSE_RANGE, PLAYER::posY + 52, 128 + CLOSE_RANGE, 248, BOSS::posX, BOSS::posY, BOSS_WIDTH, BOSS_HEIGHT) == true)
+            {
+                PLAYER::detect_closerange = true;
+            }
+            else
+            {
+                PLAYER::detect_closerange = false;
+            }
         }
         // 死亡時
         if (PLAYER::detect_deth == true)
@@ -113,10 +120,6 @@ void GAME::update(void)
         {
             game.state = UPDATE;
         }
-
-        PLAYER::update();
-        BOSS::update();
-        BULLET::update();
         break;
     }
 }
@@ -127,7 +130,8 @@ void GAME::draw(void)
     DrawGraph(0, 0, game.bgHND, true);
 
     PLAYER::draw();
-
+    BOSS::draw();
+    BULLET::draw();
     // debug-----------
     unsigned int  Cr = GetColor(200, 0, 0);
     DrawFormatString(0, 0, Cr, "タイトル(1)");
@@ -135,7 +139,11 @@ void GAME::draw(void)
     DrawFormatString(0, 40, Cr, "リザルト(3)");
     DrawFormatString(0, 60, Cr, "zoom_mode(↑orZ):%d", game.zoom_mode);
     DrawFormatString(200, 0, Cr, "detect_hit:%d", PLAYER::detect_hit);
+    DrawFormatString(200, 20, Cr, "detect_closerange:%d", PLAYER::detect_closerange);
+    DrawFormatString(200, 40, Cr, "detect_deth:%d", PLAYER::detect_deth);
 
+
+#pragma region Thumb
     if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Not))
     {
         DrawFormatString(0, 80, Cr, "LeftThumb:Not");
@@ -191,16 +199,69 @@ void GAME::draw(void)
         if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Little_Upper_Left))
             DrawFormatString(0, 80, Cr, "LeftThumb:Little_Upper_Left");
     }
+    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Not))
+    {
+        DrawFormatString(0, 100, Cr, "RightThumb:Not");
+    }
+    else
+    {
+        if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Up))
+            DrawFormatString(0, 100, Cr, "RightThumb:Up");
+        if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Before_Upper_Right))
+            DrawFormatString(0, 100, Cr, "RightThumb:Before_Upper_Right");
+        if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Upper_Right))
+            DrawFormatString(0, 100, Cr, "RightThumb:Upper_Right");
+        if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::After_Upper_Right))
+            DrawFormatString(0, 100, Cr, "RightThumb:After_Upper_Right");
+        if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Right))
+            DrawFormatString(0, 100, Cr, "RightThumb:Right");
+        if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Before_Lower_Right))
+            DrawFormatString(0, 100, Cr, "RightThumb:Before_Lower_Right");
+        if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Lower_Right))
+            DrawFormatString(0, 100, Cr, "RightThumb:Lower_Right");
+        if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::After_Lower_Right))
+            DrawFormatString(0, 100, Cr, "RightThumb:After_Lower_Right");
+        if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Down))
+            DrawFormatString(0, 100, Cr, "RightThumb:Down");
+        if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Before_Lower_Left))
+            DrawFormatString(0, 100, Cr, "RightThumb:Before_Lower_Left");
+        if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Lower_Left))
+            DrawFormatString(0, 100, Cr, "RightThumb:Lower_Left");
+        if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::After_Lower_Left))
+            DrawFormatString(0, 100, Cr, "RightThumb:After_Lower_Left");
+        if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Left))
+            DrawFormatString(0, 100, Cr, "RightThumb:Left");
+        if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Before_Upper_Left))
+            DrawFormatString(0, 100, Cr, "RightThumb:Before_Upper_Left");
+        if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Upper_Left))
+            DrawFormatString(0, 100, Cr, "RightThumb:Upper_Left");
+        if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::After_Upper_Left))
+            DrawFormatString(0, 100, Cr, "RightThumb:After_Upper_Left");
+        if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Little_Up))
+            DrawFormatString(0, 100, Cr, "RightThumb:Little_Up");
+        if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Little_Right))
+            DrawFormatString(0, 100, Cr, "RightThumb:Little_Right");
+        if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Little_Down))
+            DrawFormatString(0, 100, Cr, "RightThumb:Little_Down");
+        if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Little_Left))
+            DrawFormatString(0, 100, Cr, "RightThumb:Little_Left");
+        if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Little_Upper_Right))
+            DrawFormatString(0, 100, Cr, "RightThumb:Little_Upper_Right");
+        if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Little_Lower_Right))
+            DrawFormatString(0, 100, Cr, "RightThumb:Little_Lower_Right");
+        if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Little_Lower_Left))
+            DrawFormatString(0, 100, Cr, "RightThumb:Little_Lower_Left");
+        if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Little_Upper_Left))
+            DrawFormatString(0, 100, Cr, "RightThumb:Little_Upper_Left");
+    }
+#pragma endregion
 
-    DrawBox(boss_posX, boss_posY, boss_posX + BOSS_WIDTH - 1, boss_posY + BOSS_HEIGHT - 1, GetColor(0, 200, 0), false);
     GetDrawScreenGraph(0, 0, GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, game.zoomHND);
     if (GAME::zoom_mode == true)
     {
         DrawRotaGraph2F(GAME_SCREEN_WIDTH / 2, GAME_SCREEN_HEIGHT / 2, PLAYER::posX + PL_WIDTH / 2, PLAYER::posY + PL_HEIGHT / 2, 1.5, 0, game.zoomHND, false, false);
     }
     //-----------------
-    BOSS::draw();
-    BULLET::draw();
 }
 
 // 終了処理

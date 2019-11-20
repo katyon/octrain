@@ -167,9 +167,9 @@ bool Input::GetButton(PL_NUM plNum, int inputKey)
 }
 
 // 左スティックを倒している方向の値を返す
-bool Input::GetLeftThumb(PL_NUM plNum, int  Thumb)
+bool Input::GetLeftThumb(PL_NUM plNum, int  LeftThumb)
 {
-    switch (Thumb)
+    switch (LeftThumb)
     {
     case THUMB::Not:
         if (ThumbLX[plNum] == Input::THUMB_STATE::Zero && ThumbLY[plNum] == Input::THUMB_STATE::Zero)
@@ -269,6 +269,115 @@ bool Input::GetLeftThumb(PL_NUM plNum, int  Thumb)
         break;
     case THUMB::Little_Upper_Left:
         if (ThumbLX[plNum] == -Input::THUMB_STATE::Mid && ThumbLY[plNum] == Input::THUMB_STATE::Mid)
+            return true;
+        break;
+    }
+    return false;
+}
+
+// 右スティックを倒している方向の値を返す
+bool Input::GetRightThumb(PL_NUM plNum, int  RightThumb)
+{
+    switch (RightThumb)
+    {
+    case THUMB::Not:
+        if (ThumbRX[plNum] == Input::THUMB_STATE::Zero && ThumbRY[plNum] == Input::THUMB_STATE::Zero)
+            return true;
+        break;
+    case THUMB::Up:
+        if (ThumbRX[plNum] == Input::THUMB_STATE::Zero && ThumbRY[plNum] == Input::THUMB_STATE::Max)
+            return true;
+        break;
+    case THUMB::Before_Upper_Right:
+        if (ThumbRX[plNum] == Input::THUMB_STATE::Mid && ThumbRY[plNum] == Input::THUMB_STATE::Max)
+            return true;
+        break;
+    case THUMB::Upper_Right:
+        if (ThumbRX[plNum] == Input::THUMB_STATE::Max && ThumbRY[plNum] == Input::THUMB_STATE::Max)
+            return true;
+        break;
+    case THUMB::After_Upper_Right:
+        if (ThumbRX[plNum] == Input::THUMB_STATE::Max && ThumbRY[plNum] == Input::THUMB_STATE::Mid)
+            return true;
+        break;
+    case THUMB::Right:
+        if (ThumbRX[plNum] == Input::THUMB_STATE::Max && ThumbRY[plNum] == Input::THUMB_STATE::Zero)
+            return true;
+        break;
+    case THUMB::Before_Lower_Right:
+        if (ThumbRX[plNum] == Input::THUMB_STATE::Max && ThumbRY[plNum] == -Input::THUMB_STATE::Mid)
+            return true;
+        break;
+    case THUMB::Lower_Right:
+        if (ThumbRX[plNum] == Input::THUMB_STATE::Max && ThumbRY[plNum] == -Input::THUMB_STATE::Max)
+            return true;
+        break;
+    case THUMB::After_Lower_Right:
+        if (ThumbRX[plNum] == Input::THUMB_STATE::Mid && ThumbRY[plNum] == -Input::THUMB_STATE::Max)
+            return true;
+        break;
+    case THUMB::Down:
+        if (ThumbRX[plNum] == Input::THUMB_STATE::Zero && ThumbRY[plNum] == -Input::THUMB_STATE::Max)
+            return true;
+        break;
+    case THUMB::Before_Lower_Left:
+        if (ThumbRX[plNum] == -Input::THUMB_STATE::Mid && ThumbRY[plNum] == -Input::THUMB_STATE::Max)
+            return true;
+        break;
+    case THUMB::Lower_Left:
+        if (ThumbRX[plNum] == -Input::THUMB_STATE::Max && ThumbRY[plNum] == -Input::THUMB_STATE::Max)
+            return true;
+        break;
+    case THUMB::After_Lower_Left:
+        if (ThumbRX[plNum] == -Input::THUMB_STATE::Max && ThumbRY[plNum] == -Input::THUMB_STATE::Mid)
+            return true;
+        break;
+    case THUMB::Left:
+        if (ThumbRX[plNum] == -Input::THUMB_STATE::Max && ThumbRY[plNum] == Input::THUMB_STATE::Zero)
+            return true;
+        break;
+    case THUMB::Before_Upper_Left:
+        if (ThumbRX[plNum] == -Input::THUMB_STATE::Max && ThumbRY[plNum] == Input::THUMB_STATE::Mid)
+            return true;
+        break;
+    case THUMB::Upper_Left:
+        if (ThumbRX[plNum] == -Input::THUMB_STATE::Max && ThumbRY[plNum] == Input::THUMB_STATE::Max)
+            return true;
+        break;
+    case THUMB::After_Upper_Left:
+        if (ThumbRX[plNum] == -Input::THUMB_STATE::Mid && ThumbRY[plNum] == Input::THUMB_STATE::Max)
+            return true;
+        break;
+    case THUMB::Little_Up:
+        if (ThumbRX[plNum] == Input::THUMB_STATE::Zero && ThumbRY[plNum] == Input::THUMB_STATE::Mid)
+            return true;
+        break;
+    case THUMB::Little_Right:
+        if (ThumbRX[plNum] == Input::THUMB_STATE::Mid && ThumbRY[plNum] == Input::THUMB_STATE::Zero)
+            return true;
+        break;
+    case THUMB::Little_Down:
+        if (ThumbRX[plNum] == Input::THUMB_STATE::Zero && ThumbRY[plNum] == -Input::THUMB_STATE::Mid)
+            return true;
+        break;
+    case THUMB::Little_Left:
+        if (ThumbRX[plNum] == -Input::THUMB_STATE::Mid && ThumbRY[plNum] == Input::THUMB_STATE::Zero)
+            return true;
+        break;
+    case THUMB::Little_Upper_Right:
+        if (ThumbRX[plNum] == Input::THUMB_STATE::Mid && ThumbRY[plNum] == Input::THUMB_STATE::Mid)
+            return true;
+        break;
+    case THUMB::Little_Lower_Right:
+        if (ThumbRX[plNum] == Input::THUMB_STATE::Mid && ThumbRY[plNum] == -Input::THUMB_STATE::Mid)
+            return true;
+        break;
+    case THUMB::Little_Lower_Left:
+        if (ThumbRX[plNum] == -Input::THUMB_STATE::Mid && ThumbRY[plNum] == -Input::THUMB_STATE::Mid)
+            return true;
+        break;
+    case THUMB::Little_Upper_Left:
+        if (ThumbRX[plNum] == -Input::THUMB_STATE::Mid && ThumbRY[plNum] == Input::THUMB_STATE::Mid)
             return true;
         break;
     }
