@@ -239,6 +239,38 @@ bool Input::GetLeftThumb(PL_NUM plNum, int  Thumb)
         if (ThumbLX[plNum] == -Input::THUMB_STATE::Mid && ThumbLY[plNum] == Input::THUMB_STATE::Max)
             return true;
         break;
+    case THUMB::Little_Up:
+        if (ThumbLX[plNum] == Input::THUMB_STATE::Zero && ThumbLY[plNum] == Input::THUMB_STATE::Mid)
+            return true;
+        break;
+    case THUMB::Little_Right:
+        if (ThumbLX[plNum] == Input::THUMB_STATE::Mid && ThumbLY[plNum] == Input::THUMB_STATE::Zero)
+            return true;
+        break;
+    case THUMB::Little_Down:
+        if (ThumbLX[plNum] == Input::THUMB_STATE::Zero && ThumbLY[plNum] == -Input::THUMB_STATE::Mid)
+            return true;
+        break;
+    case THUMB::Little_Left:
+        if (ThumbLX[plNum] == -Input::THUMB_STATE::Mid && ThumbLY[plNum] == Input::THUMB_STATE::Zero)
+            return true;
+        break;
+    case THUMB::Little_Upper_Right:
+        if (ThumbLX[plNum] == Input::THUMB_STATE::Mid && ThumbLY[plNum] == Input::THUMB_STATE::Mid)
+            return true;
+        break;
+    case THUMB::Little_Lower_Right:
+        if (ThumbLX[plNum] == Input::THUMB_STATE::Mid && ThumbLY[plNum] == -Input::THUMB_STATE::Mid)
+            return true;
+        break;
+    case THUMB::Little_Lower_Left:
+        if (ThumbLX[plNum] == -Input::THUMB_STATE::Mid && ThumbLY[plNum] == -Input::THUMB_STATE::Mid)
+            return true;
+        break;
+    case THUMB::Little_Upper_Left:
+        if (ThumbLX[plNum] == -Input::THUMB_STATE::Mid && ThumbLY[plNum] == Input::THUMB_STATE::Mid)
+            return true;
+        break;
     }
     return false;
 }

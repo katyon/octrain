@@ -2,8 +2,9 @@
 // 定数 ----------------------------------------------------------------
 #define GAME_SCREEN_WIDTH	(1920)  // ゲーム画面の幅
 #define GAME_SCREEN_HEIGHT	(1080)  // ゲーム画面の高さ
-#define PI          (3.1415926535)  // 円周率
-#define CHIP_SIZE           (64)    // マップチップの一つ当たりの大きさ
+#define PI          (3.1415926535f) // 円周率
+#define ROOT2       (1.41421356f)   // √2
+#define ROOT5       (2.2360679f)    // √5
 
 enum SCENE_CASE
 {

@@ -58,9 +58,9 @@ void TITLE::draw(void)
 
     // debug-----------
     unsigned int  Cr = GetColor(200, 0, 0);
-    DrawFormatString(0, 0, Cr, "タイトル:1");
-    DrawFormatString(0, 20, Cr, "ゲーム:2");
-    DrawFormatString(0, 40, Cr, "リザルト:3");
+    DrawFormatString(0, 0, Cr, "タイトル(1)");
+    DrawFormatString(0, 20, Cr, "ゲーム(2)");
+    DrawFormatString(0, 40, Cr, "リザルト(3)");
 
     //-----------------
 }

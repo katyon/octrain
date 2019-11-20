@@ -8,6 +8,8 @@ enum THUMB
     Right, Before_Lower_Right, Lower_Right, After_Lower_Right,
     Down, Before_Lower_Left, Lower_Left, After_Lower_Left,
     Left, Before_Upper_Left, Upper_Left, After_Upper_Left,
+    Little_Up, Little_Right, Little_Down, Little_Left,
+    Little_Upper_Right, Little_Lower_Right, Little_Lower_Left, Little_Upper_Left
 };
 
 /// InputClass How to

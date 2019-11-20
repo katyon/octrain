@@ -7,6 +7,12 @@
 class PLAYER
 {
 public:
+    static float posX;
+    static float posY;
+    static int hp;
+    static bool detect_hit; // trueで当たってる
+    static bool detect_deth; // trueで死亡
+
     static void init(void);      // 初期設定
     static void update(void);    // 更新処理
     static void draw(void);      // 描画処理
@@ -14,22 +20,17 @@ public:
 
 private:
     int state = 0;
-    float posX = 0;
-    float posY = 0;
+    int hit_timer = 0;
+    int at_timer = 0;
     float sub_posX = 0; // playerの右下の座標
     float sub_posY = 0;
     float pivot_posX = 0; // playerの中心座標
     float pivot_posY = 0;
     float speed = 0;
     int init_hp = 0;
-    int hp = 0;
     int sub_hp = 0;
     int init_bullet = 0;
     int bullet = 0;
     int power = 0;
-    int plHND[4] = { 0 };
-    int bulletHND = 0;
-    int hpHND = 0;
-    int sub_hpHND = 0;
-    int zoomHND = 0;
+    bool detect_attack = false;
 };
