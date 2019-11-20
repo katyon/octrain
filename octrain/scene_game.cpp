@@ -4,6 +4,8 @@
 #include "common.h"
 #include "input.h"
 #include "player.h"
+#include "boss.h"
+#include "shot.h"
 #include "scene_game.h"
 
 #include <math.h>
@@ -32,6 +34,8 @@ void GAME::init(void)
     game.zoomHND = MakeGraph(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT);
 
     PLAYER::init();
+    BOSS::init();
+    BULLET::init();
 }
 
 // çXêVèàóù
@@ -109,6 +113,10 @@ void GAME::update(void)
         {
             game.state = UPDATE;
         }
+
+        PLAYER::update();
+        BOSS::update();
+        BULLET::update();
         break;
     }
 }
@@ -191,6 +199,8 @@ void GAME::draw(void)
         DrawRotaGraph2F(GAME_SCREEN_WIDTH / 2, GAME_SCREEN_HEIGHT / 2, PLAYER::posX + PL_WIDTH / 2, PLAYER::posY + PL_HEIGHT / 2, 1.5, 0, game.zoomHND, false, false);
     }
     //-----------------
+    BOSS::draw();
+    BULLET::draw();
 }
 
 // èIóπèàóù
@@ -200,6 +210,8 @@ void GAME::end(void)
     DeleteGraph(game.spriteHND);
 
     PLAYER::end();
+    BOSS::end();
+    BULLET::end();
 }
 
 bool GAME::hitcheck_rect(float ax, float ay, int aw, int ah, float bx, float by, int bw, int bh)
