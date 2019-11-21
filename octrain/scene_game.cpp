@@ -29,7 +29,6 @@ void GAME::init(void)
 
     PLAYER::init();
     BOSS::init();
-    BULLET::init();
 }
 
 // 更新処理
@@ -44,7 +43,6 @@ void GAME::update(void)
     case UPDATE:
         PLAYER::update();
         BOSS::update();
-        BULLET::update();
         // debug ------------------------------------------
         if (CheckHitKey(KEY_INPUT_1))
         {
@@ -131,7 +129,6 @@ void GAME::draw(void)
 
     PLAYER::draw();
     BOSS::draw();
-    BULLET::draw();
     // debug-----------
     unsigned int  Cr = GetColor(200, 0, 0);
     DrawFormatString(0, 0, Cr, "タイトル(1)");
@@ -272,7 +269,6 @@ void GAME::end(void)
 
     PLAYER::end();
     BOSS::end();
-    BULLET::end();
 }
 
 bool GAME::hitcheck_rect(float ax, float ay, int aw, int ah, float bx, float by, int bw, int bh)

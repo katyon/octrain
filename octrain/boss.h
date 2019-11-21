@@ -13,6 +13,8 @@ public:
     static bool detect_hit;     // trueで当たってる
     static bool detect_deth;    // trueで死亡
     static bool detect_reverse; // trueで反転
+    static bool detect_damaged;
+    static bool detect_close_damaged;
 
     static void init(void);     // 初期設定
     static void update(void);   // 更新処理
@@ -22,11 +24,20 @@ public:
 private:
     int state = 0;
     int hit_timer = 0;
+    int damaged_timer = 0;
+    int close_damaged_timer = 0;
     int at_timer = 0;
     float pivot_posX = 0;   // bossの中心座標
     float pivot_posY = 0;
     float speed = 0;
     int hp = 0;
     int sub_hp = 0;
+    int N_attack = 0;
+    int SPK_attack = 0;
     bool detect_attack = false;
+    enum PATTERN
+    {
+        N_Diffusion, N_Homing,N_Column,
+        SPK_1,SPK_2,SPK_3
+    };
 };

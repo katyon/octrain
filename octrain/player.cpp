@@ -266,7 +266,7 @@ void PLAYER::update(void)
         if (player.detect_close_attack == true)
         {
             player.close_at_timer++;
-            if (player.close_at_timer > 20)
+            if (player.close_at_timer > 15)
             {
                 player.close_at_timer = 0;
                 player.detect_close_attack = false;
@@ -333,12 +333,12 @@ void PLAYER::draw(void)
             {
                 if (player.detect_close_attack == true)
                 {
-                    //close_attack(hit)
-                    DrawRectGraphF(player.posX, player.posY, (PL_WIDTH + 114) * (player.close_at_timer / 5 % 4), 332, PL_WIDTH + 114, PL_HEIGHT, GAME::spriteHND, true, true, false);
+                    //close_attack(reverse,hit)
+                    DrawRectGraphF(player.posX, player.posY, (PL_WIDTH + 110) * (player.close_at_timer / 5 % 3), 332, PL_WIDTH + 110, PL_HEIGHT, GAME::spriteHND, true, true, false);
                 }
                 else
                 {
-                    // wait(hit)
+                    // wait(reverse,hit)
                     DrawRectGraphF(player.posX, player.posY, PL_WIDTH * (GAME::timer / 7 % 4), 0, PL_WIDTH, PL_HEIGHT, GAME::spriteHND, true, true, false);
                 }
             }
@@ -347,12 +347,12 @@ void PLAYER::draw(void)
         {
             if (player.detect_close_attack == true)
             {
-                //close_attack
-                DrawRectGraphF(player.posX, player.posY, (PL_WIDTH + 114) * (player.close_at_timer / 5 % 4), 332, PL_WIDTH + 114, PL_HEIGHT, GAME::spriteHND, true, true, false);
+                //close_attack(reverse)
+                DrawRectGraphF(player.posX, player.posY, (PL_WIDTH + 110) * (player.close_at_timer / 5 % 3), 332, PL_WIDTH + 110, PL_HEIGHT, GAME::spriteHND, true, true, false);
             }
             else
             {
-                // wait
+                // wait(reverse)
                 DrawRectGraphF(player.posX, player.posY, PL_WIDTH * (GAME::timer / 7 % 4), 0, PL_WIDTH, PL_HEIGHT, GAME::spriteHND, true, true, false);
             }
         }
@@ -366,11 +366,11 @@ void PLAYER::draw(void)
                 if (player.detect_close_attack == true)
                 {
                     //close_attack(hit)
-                    DrawRectGraphF(player.posX - 114, player.posY, (PL_WIDTH + 114) * (player.close_at_timer / 5 % 4), 332, PL_WIDTH + 114, PL_HEIGHT, GAME::spriteHND, true, false, false);
+                    DrawRectGraphF(player.posX - 110, player.posY, (PL_WIDTH + 110) * (player.close_at_timer / 5 % 3), 332, PL_WIDTH + 110, PL_HEIGHT, GAME::spriteHND, true, false, false);
                 }
                 else
                 {
-                    // wait(reverse,hit)
+                    // wait(hit)
                     DrawRectGraphF(player.posX, player.posY, PL_WIDTH * (GAME::timer / 7 % 4), 0, PL_WIDTH, PL_HEIGHT, GAME::spriteHND, true, false, false);
                 }
             }
@@ -380,11 +380,11 @@ void PLAYER::draw(void)
             if (player.detect_close_attack == true)
             {
                 //close_attack
-                DrawRectGraphF(player.posX - 114, player.posY, (PL_WIDTH + 114) * (player.close_at_timer / 5 % 4), 332, PL_WIDTH + 114, PL_HEIGHT, GAME::spriteHND, true, false, false);
+                DrawRectGraphF(player.posX - 110, player.posY, (PL_WIDTH + 110) * (player.close_at_timer / 5 % 3), 332, PL_WIDTH + 110, PL_HEIGHT, GAME::spriteHND, true, false, false);
             }
             else
             {
-                // wait(reverse)
+                // wait
                 DrawRectGraphF(player.posX, player.posY, PL_WIDTH * (GAME::timer / 7 % 4), 0, PL_WIDTH, PL_HEIGHT, GAME::spriteHND, true, false, false);
             }
         }
@@ -401,13 +401,13 @@ void PLAYER::draw(void)
     // debug------------------------------------------------------------------------
     unsigned int  Cr = GetColor(200, 0, 0), Cr2 = GetColor(230, 0, 0), Cr3 = GetColor(0, 0, 230);
 
-    DrawFormatString(400, 0, Cr, "player.hp:%d", player.hp);
-    DrawFormatString(400, 20, Cr, "player.sub_hp:%d", player.sub_hp);
-    DrawFormatString(400, 40, Cr, "bullet:%d", player.bullet);
-    DrawFormatString(400, 60, Cr, "power:%d", player.power);
-    DrawFormatString(400, 80, Cr, "hit_timer:%d", player.hit_timer);
-    DrawFormatString(400, 100, Cr, "at_timer:%d", player.at_timer);
-    DrawFormatString(400, 120, Cr, "close_at_timer:%d", player.close_at_timer);
+    DrawFormatString(600, 0, Cr, "player.hp:%d", player.hp);
+    DrawFormatString(600, 20, Cr, "player.sub_hp:%d", player.sub_hp);
+    DrawFormatString(600, 40, Cr, "bullet:%d", player.bullet);
+    DrawFormatString(600, 60, Cr, "power:%d", player.power);
+    DrawFormatString(600, 80, Cr, "hit_timer:%d", player.hit_timer);
+    DrawFormatString(600, 100, Cr, "at_timer:%d", player.at_timer);
+    DrawFormatString(600, 120, Cr, "close_at_timer:%d", player.close_at_timer);
 
     if (player.detect_reverse == true)
     {

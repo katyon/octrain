@@ -15,6 +15,8 @@ float BOSS::posY = 0;
 bool BOSS::detect_hit = false;
 bool BOSS::detect_deth = false;
 bool BOSS::detect_reverse = false;
+bool BOSS::detect_damaged = false;
+bool BOSS::detect_close_damaged = false;
 // ŠÖ”À‘Ì ----------------------------------------------------------------------------------------
 // ‰Šúİ’è
 void BOSS::init(void)
@@ -22,18 +24,24 @@ void BOSS::init(void)
     boss.state = 0;
     boss.state = 0;
     boss.hit_timer = 0;
+    boss.damaged_timer = 0;
+    boss.close_damaged_timer = 0;
     boss.at_timer = 0;
     boss.posX = GAME_SCREEN_WIDTH / 2;
     boss.posY = 0;
     boss.pivot_posX = 0;
     boss.pivot_posY = 0;
     boss.speed = 15;
-    boss.hp = 0;
-    boss.sub_hp = 0;
+    boss.hp = BOSS_HP;
+    boss.sub_hp = BOSS_HP;
+    boss.N_attack = 0;
+    boss.SPK_attack = 0;
     boss.detect_hit = false;
     boss.detect_deth = false;
     boss.detect_attack = false;
     boss.detect_reverse = false;
+    boss.detect_damaged = false;
+    boss.detect_close_damaged = false;
 }
 
 // XVˆ—
@@ -155,6 +163,34 @@ void BOSS::update(void)
     }
 #pragma endregion
 
+    // ‰“‹——£UŒ‚
+    if (CheckHitKey(KEY_INPUT_X))
+    {
+        boss.detect_damaged = true;
+    }
+    if (boss.detect_damaged == true)
+    {
+        boss.damaged_timer++;
+        if (boss.damaged_timer > 60)
+        {
+            boss.damaged_timer = 0;
+            boss.detect_damaged = false;
+        }
+    }
+    // ‹ß‹——£UŒ‚
+    if (CheckHitKey(KEY_INPUT_Z))
+    {
+        boss.detect_close_damaged = true;
+    }
+    if (boss.detect_close_damaged == true)
+    {
+        boss.close_damaged_timer++;
+        if (boss.close_damaged_timer > 60)
+        {
+            boss.close_damaged_timer = 0;
+            boss.detect_close_damaged = false;
+        }
+    }
     //------------------------------
     // ˆÚ“®§ŒÀ
     if (boss.posX < 0)
@@ -173,6 +209,13 @@ void BOSS::update(void)
     {
         boss.posY = GAME_SCREEN_HEIGHT - BOSS_HEIGHT;
     }
+
+    // hp
+    if (boss.detect_hit == true)
+    {
+        boss.hp -= 50;
+    }
+
     if (BOSS::posX < PLAYER::posX)
     {
         boss.detect_reverse = true;
@@ -180,6 +223,27 @@ void BOSS::update(void)
     else
     {
         boss.detect_reverse = false;
+    }
+
+    // N_attack
+    switch (boss.N_attack)
+    {
+    case N_Diffusion:
+        break;
+    case N_Homing:
+        break;
+    case N_Column:
+        break;
+    }
+    // SPK
+    switch (boss.SPK_attack)
+    {
+    case SPK_1:
+        break;
+    case SPK_2:
+        break;
+    case SPK_3:
+        break;
     }
 }
 
@@ -194,8 +258,14 @@ void BOSS::draw(void)
     {
         DrawRectGraphF(boss.posX, boss.posY, 1416 + BOSS_WIDTH * (GAME::timer / 7 % 4), 0, BOSS_WIDTH, BOSS_HEIGHT, GAME::spriteHND, true, false, false);
     }
+    DrawRectGraph(GAME_SCREEN_WIDTH / 2, 0, 2088, 64, BOSS_HP, 64, GAME::spriteHND, true, false, false);
+    DrawRectGraph(GAME_SCREEN_WIDTH / 2 + BOSS_HP - boss.hp, 0, 2088, 0, boss.hp, 64, GAME::spriteHND, true, false, false);
     //debug-----
-    DrawBox(boss.posX, boss.posY, boss.posX + BOSS_WIDTH , boss.posY + BOSS_HEIGHT, GetColor(0, 200, 0), false);
+    unsigned int  Cr = GetColor(200, 0, 0);
+    DrawFormatString(200, 60, Cr, "boss.detect_damaged:%d", boss.detect_damaged);
+    DrawFormatString(200, 80, Cr, "boss.detect_close_damaged:%d", boss.detect_close_damaged);
+
+    DrawBox(boss.posX, boss.posY, boss.posX + BOSS_WIDTH, boss.posY + BOSS_HEIGHT, GetColor(0, 200, 0), false);
     //--------
 }
 
