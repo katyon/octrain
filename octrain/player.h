@@ -1,8 +1,10 @@
 #pragma once
+
+#include "shot.h"
 // ’è” ----------------------------------------------------------------
-#define PL_WIDTH    (240)
+#define PL_WIDTH    (300)
 #define PL_HEIGHT   (332)
-#define CLOSE_RANGE (150)
+#define CLOSE_RANGE (140)
 
 // ƒNƒ‰ƒX --------------------------------------------------------------
 class PLAYER
@@ -10,6 +12,8 @@ class PLAYER
 public:
     static float posX;
     static float posY;
+    static float pivot_posX;
+    static float pivot_posY;
     static int hp;
     static bool detect_hit;         // true:“–‚½‚Á‚Ä‚é
     static bool detect_closerange;  // true:‹ßÚ”ÍˆÍ“à
@@ -25,18 +29,18 @@ private:
     int state = 0;
     int hit_timer = 0;
     int at_timer = 0;
-    int close_at_timer = 0;
+    int close_at1_timer = 0;
+    int close_at2_timer = 0;
     float sub_posX = 0;     // player‚Ì‰E‰º‚ÌÀ•W
     float sub_posY = 0;
-    float pivot_posX = 0;   // player‚Ì’†SÀ•W
-    float pivot_posY = 0;
     float speed = 0;
     int init_hp = 0;
     int sub_hp = 0;
     int init_bullet = 0;
     int bullet = 0;
+    int bullet_count = 0;
     int power = 0;
     bool detect_attack = false;         // true:UŒ‚’†
-    bool detect_close_attack = false;   // true:UŒ‚’†
-
+    bool detect_close_attack1 = false;  // true:UŒ‚’†
+    bool detect_close_attack2 = false;  // true:UŒ‚’†
 };

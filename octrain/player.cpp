@@ -6,12 +6,16 @@
 #include "input.h"
 #include "player.h"
 #include "scene_game.h"
+#include "shot.h"
 
 // インスタンス宣言 ---------------------------------------------------------------------------------
 PLAYER player;
+BULLET pl_bullet[PL_BULLET_MAX];
 
 float PLAYER::posX = 0;
 float PLAYER::posY = 0;
+float PLAYER::pivot_posX = 0;
+float PLAYER::pivot_posY = 0;
 int PLAYER::hp = 0;
 bool PLAYER::detect_hit = false;
 bool PLAYER::detect_closerange = false;
@@ -21,10 +25,16 @@ bool PLAYER::detect_reverse = false;
 // 初期設定
 void PLAYER::init(void)
 {
+    for (int i = 0; i < PL_BULLET_MAX; i++)
+    {
+        pl_bullet[i].init(&pl_bullet[i]);
+    }
+
     player.state = 0;
     player.hit_timer = 0;
     player.at_timer = 0;
-    player.close_at_timer = 0;
+    player.close_at1_timer = 0;
+    player.close_at2_timer = 0;
     player.posX = 0;
     player.posY = 0;
     player.sub_posX = 0;
@@ -37,13 +47,15 @@ void PLAYER::init(void)
     player.sub_hp = player.init_hp;
     player.init_bullet = 10;
     player.bullet = player.init_bullet;
+    player.bullet_count = 0;
     player.power = 0;
     player.detect_hit = false;
     player.detect_closerange = false;
     player.detect_deth = false;
     player.detect_reverse = true;
     player.detect_attack = false;
-    player.detect_close_attack = false;
+    player.detect_close_attack1 = false;
+    player.detect_close_attack2 = false;
 }
 
 // 更新処理
@@ -73,6 +85,19 @@ void PLAYER::update(void)
     if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_LEFT_SHOULDER))
     {
         player.hp -= 10;
+    }
+    if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_DPAD_RIGHT))
+    {
+        for (int i = 0; i < PL_BULLET_MAX; i++)
+        {
+            if (pl_bullet[i].get_pl_exist(&pl_bullet[i]) == true)
+            {
+                continue;
+            }
+            pl_bullet[i].set_pl_exist(&pl_bullet[i], true);
+            player.bullet_count++;
+            break;
+        }
     }
     //----------------------------------------------------------------
     // 移動
@@ -217,9 +242,9 @@ void PLAYER::update(void)
         {
             player.posX = -24;
         }
-        if (player.posX > GAME_SCREEN_WIDTH - PL_WIDTH + 88)
+        if (player.posX > GAME_SCREEN_WIDTH - PL_WIDTH + 148)
         {
-            player.posX = GAME_SCREEN_WIDTH - PL_WIDTH + 88;
+            player.posX = GAME_SCREEN_WIDTH - PL_WIDTH + 148;
         }
         if (player.posY < -52)
         {
@@ -261,40 +286,61 @@ void PLAYER::update(void)
 
     // closerange
     // attack
+    if (player.detect_close_attack1 == true)
+    {
+        player.close_at1_timer++;
+        if (player.close_at1_timer > 20)
+        {
+            player.close_at1_timer = 0;
+            player.detect_close_attack1 = false;
+        }
+    }
+    if (player.detect_close_attack2 == true)
+    {
+        player.close_at2_timer++;
+        if (player.close_at2_timer > 20)
+        {
+            player.close_at2_timer = 0;
+            player.detect_close_attack2 = false;
+        }
+    }
+    if (player.detect_attack == true)
+    {
+        player.at_timer++;
+        if (player.at_timer > 20)
+        {
+            player.at_timer = 0;
+            player.detect_attack = false;
+        }
+    }
+
     if (player.detect_closerange == true)
     {
-        if (player.detect_close_attack == true)
-        {
-            player.close_at_timer++;
-            if (player.close_at_timer > 15)
-            {
-                player.close_at_timer = 0;
-                player.detect_close_attack = false;
-            }
-        }
-        else
+        if (player.detect_close_attack1 == false)
         {
             if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_A))
             {
                 player.power += 10;
-                player.detect_close_attack = true;
+                player.detect_close_attack1 = true;
+            }
+        }
+        else
+        {
+            if (player.detect_close_attack2 == false)
+            {
+                if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_A))
+                {
+                    player.power += 10;
+                    player.detect_close_attack2 = true;
+                }
             }
         }
     }
     else
     {
-        if (player.detect_attack == true)
+        if (player.detect_attack == false)
         {
-            player.at_timer++;
-            if (player.at_timer > 20)
-            {
-                player.at_timer = 0;
-                player.detect_attack = false;
-            }
-        }
-        else
-        {
-            if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_A))
+            if (player.bullet > 0 && Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_A))
             {
                 player.bullet -= 1;
                 player.detect_attack = true;
@@ -302,13 +348,18 @@ void PLAYER::update(void)
         }
     }
 
-    if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_B))
+    if (player.bullet <= 0)
+    {
+        player.bullet = 0;
+    }
+    else if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_B))
     {
         player.bullet -= 2;
     }
     if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_X))
     {
         player.bullet = player.init_bullet;
+        player.power = 0;
     }
 
     // 調整
@@ -316,9 +367,15 @@ void PLAYER::update(void)
     player.sub_posY = player.posY + PL_HEIGHT - 1;
     player.pivot_posX = player.posX + PL_WIDTH / 2;
     player.pivot_posY = player.posY + PL_HEIGHT / 2;
-    if (player.bullet < 0)
+
+    // bullet
+    for (int i = 0; i < PL_BULLET_MAX; i++)
     {
-        player.bullet = 0;
+        if (pl_bullet[i].get_pl_exist(&pl_bullet[i]) == false)
+        {
+            continue;
+        }
+        pl_bullet[i].pl_update(&pl_bullet[i]);
     }
 }
 
@@ -331,10 +388,32 @@ void PLAYER::draw(void)
         {
             if (player.hit_timer / 15 % 2)
             {
-                if (player.detect_close_attack == true)
+                if (player.detect_close_attack1 == true)
                 {
-                    //close_attack(reverse,hit)
-                    DrawRectGraphF(player.posX, player.posY, (PL_WIDTH + 110) * (player.close_at_timer / 5 % 3), 332, PL_WIDTH + 110, PL_HEIGHT, GAME::spriteHND, true, true, false);
+                    if (player.detect_close_attack2 == true)
+                    {
+                        if (player.close_at2_timer < 10)
+                        {
+                            // close_attack2(reverse,hit)
+                            DrawRectGraphF(player.posX, player.posY, (PL_WIDTH + 52) * (player.close_at2_timer / 5 % 3), 665, PL_WIDTH + 52, PL_HEIGHT, GAME::spriteHND, true, true, false);
+                        }
+                        else
+                        {
+                            DrawRectGraphF(player.posX, player.posY, (PL_WIDTH + 52) * 2, 665, PL_WIDTH + 52, PL_HEIGHT, GAME::spriteHND, true, true, false);
+                        }
+                    }
+                    else
+                    {
+                        if (player.close_at1_timer < 10)
+                        {
+                            // close_attack1(reverse,hit)
+                            DrawRectGraphF(player.posX, player.posY, (PL_WIDTH + 50) * (player.close_at1_timer / 5 % 3), 332, PL_WIDTH + 50, PL_HEIGHT, GAME::spriteHND, true, true, false);
+                        }
+                        else
+                        {
+                            DrawRectGraphF(player.posX, player.posY, (PL_WIDTH + 50) * 2, 332, PL_WIDTH + 50, PL_HEIGHT, GAME::spriteHND, true, true, false);
+                        }
+                    }
                 }
                 else
                 {
@@ -345,10 +424,32 @@ void PLAYER::draw(void)
         }
         else
         {
-            if (player.detect_close_attack == true)
+            if (player.detect_close_attack1 == true)
             {
-                //close_attack(reverse)
-                DrawRectGraphF(player.posX, player.posY, (PL_WIDTH + 110) * (player.close_at_timer / 5 % 3), 332, PL_WIDTH + 110, PL_HEIGHT, GAME::spriteHND, true, true, false);
+                if (player.detect_close_attack2 == true)
+                {
+                    if (player.close_at2_timer < 10)
+                    {
+                        // close_attack2(reverse)
+                        DrawRectGraphF(player.posX, player.posY, (PL_WIDTH + 52) * (player.close_at2_timer / 5 % 3), 665, PL_WIDTH + 52, PL_HEIGHT, GAME::spriteHND, true, true, false);
+                    }
+                    else
+                    {
+                        DrawRectGraphF(player.posX, player.posY, (PL_WIDTH + 52) * 2, 665, PL_WIDTH + 52, PL_HEIGHT, GAME::spriteHND, true, true, false);
+                    }
+                }
+                else
+                {
+                    if (player.close_at1_timer < 10)
+                    {
+                        //close_attack1(reverse)
+                        DrawRectGraphF(player.posX, player.posY, (PL_WIDTH + 50) * (player.close_at1_timer / 5 % 3), 332, PL_WIDTH + 50, PL_HEIGHT, GAME::spriteHND, true, true, false);
+                    }
+                    else
+                    {
+                        DrawRectGraphF(player.posX, player.posY, (PL_WIDTH + 50) * 2, 332, PL_WIDTH + 50, PL_HEIGHT, GAME::spriteHND, true, true, false);
+                    }
+                }
             }
             else
             {
@@ -363,29 +464,73 @@ void PLAYER::draw(void)
         {
             if (player.hit_timer / 15 % 2)
             {
-                if (player.detect_close_attack == true)
+                if (player.detect_close_attack1 == true)
                 {
-                    //close_attack(hit)
-                    DrawRectGraphF(player.posX - 110, player.posY, (PL_WIDTH + 110) * (player.close_at_timer / 5 % 3), 332, PL_WIDTH + 110, PL_HEIGHT, GAME::spriteHND, true, false, false);
+                    if (player.detect_close_attack2 == true)
+                    {
+                        if (player.close_at2_timer < 10)
+                        {
+                            // close_attack2(hit)
+                            DrawRectGraphF(player.posX - 110, player.posY, (PL_WIDTH + 52) * (player.close_at2_timer / 5 % 3), 665, PL_WIDTH + 52, PL_HEIGHT, GAME::spriteHND, true, false, false);
+                        }
+                        else
+                        {
+                            DrawRectGraphF(player.posX - 110, player.posY, (PL_WIDTH + 52) * 2, 665, PL_WIDTH + 52, PL_HEIGHT, GAME::spriteHND, true, false, false);
+                        }
+                    }
+                    else
+                    {
+                        if (player.close_at1_timer < 10)
+                        {
+                            //close_attack1(hit)
+                            DrawRectGraphF(player.posX - 110, player.posY, (PL_WIDTH + 50) * (player.close_at1_timer / 5 % 3), 332, PL_WIDTH + 50, PL_HEIGHT, GAME::spriteHND, true, false, false);
+                        }
+                        else
+                        {
+                            DrawRectGraphF(player.posX - 110, player.posY, (PL_WIDTH + 50) * 2, 332, PL_WIDTH + 50, PL_HEIGHT, GAME::spriteHND, true, false, false);
+                        }
+                    }
                 }
                 else
                 {
                     // wait(hit)
-                    DrawRectGraphF(player.posX, player.posY, PL_WIDTH * (GAME::timer / 7 % 4), 0, PL_WIDTH, PL_HEIGHT, GAME::spriteHND, true, false, false);
+                    DrawRectGraphF(player.posX - 60, player.posY, PL_WIDTH * (GAME::timer / 7 % 4), 0, PL_WIDTH, PL_HEIGHT, GAME::spriteHND, true, false, false);
                 }
             }
         }
         else
         {
-            if (player.detect_close_attack == true)
+            if (player.detect_close_attack1 == true)
             {
-                //close_attack
-                DrawRectGraphF(player.posX - 110, player.posY, (PL_WIDTH + 110) * (player.close_at_timer / 5 % 3), 332, PL_WIDTH + 110, PL_HEIGHT, GAME::spriteHND, true, false, false);
+                if (player.detect_close_attack2 == true)
+                {
+                    if (player.close_at2_timer < 10)
+                    {
+                        // close_attack2
+                        DrawRectGraphF(player.posX - 110, player.posY, (PL_WIDTH + 52) * (player.close_at2_timer / 5 % 3), 665, PL_WIDTH + 52, PL_HEIGHT, GAME::spriteHND, true, false, false);
+                    }
+                    else
+                    {
+                        DrawRectGraphF(player.posX - 110, player.posY, (PL_WIDTH + 52) * 2, 665, PL_WIDTH + 52, PL_HEIGHT, GAME::spriteHND, true, false, false);
+                    }
+                }
+                else
+                {
+                    if (player.close_at1_timer < 10)
+                    {
+                        //close_attack1
+                        DrawRectGraphF(player.posX - 110, player.posY, (PL_WIDTH + 50) * (player.close_at1_timer / 5 % 3), 332, PL_WIDTH + 50, PL_HEIGHT, GAME::spriteHND, true, false, false);
+                    }
+                    else
+                    {
+                        DrawRectGraphF(player.posX - 110, player.posY, (PL_WIDTH + 50) * 2, 332, PL_WIDTH + 50, PL_HEIGHT, GAME::spriteHND, true, false, false);
+                    }
+                }
             }
             else
             {
                 // wait
-                DrawRectGraphF(player.posX, player.posY, PL_WIDTH * (GAME::timer / 7 % 4), 0, PL_WIDTH, PL_HEIGHT, GAME::spriteHND, true, false, false);
+                DrawRectGraphF(player.posX - 60, player.posY, PL_WIDTH * (GAME::timer / 7 % 4), 0, PL_WIDTH, PL_HEIGHT, GAME::spriteHND, true, false, false);
             }
         }
     }
@@ -395,7 +540,7 @@ void PLAYER::draw(void)
     DrawRectGraph(0, 0, 2088, 0, player.hp, 64, GAME::spriteHND, true, false, false);
     for (int i = 0; i < player.bullet; i++)
     {
-        DrawRectGraph(i * 70, 70, 960, 0, 66, 66, GAME::spriteHND, true, false, false);
+        DrawRectGraph(i * 70, 70, 2088, 188, 64, 64, GAME::spriteHND, true, false, false);
     }
 
     // debug------------------------------------------------------------------------
@@ -407,18 +552,32 @@ void PLAYER::draw(void)
     DrawFormatString(600, 60, Cr, "power:%d", player.power);
     DrawFormatString(600, 80, Cr, "hit_timer:%d", player.hit_timer);
     DrawFormatString(600, 100, Cr, "at_timer:%d", player.at_timer);
-    DrawFormatString(600, 120, Cr, "close_at_timer:%d", player.close_at_timer);
+    DrawFormatString(600, 120, Cr, "close_at_timer:%d", player.close_at1_timer);
+    DrawFormatString(600, 140, Cr, "detect_attack:%d", player.detect_attack);
+    DrawFormatString(600, 160, Cr, "detect_close_attack1:%d", player.detect_close_attack1);
+    DrawFormatString(600, 180, Cr, "detect_close_attack2:%d", player.detect_close_attack2);
+    DrawFormatString(600, 200, Cr, "nuw_bullet:%d", player.bullet_count);
 
     if (player.detect_reverse == true)
     {
-        DrawBox(player.posX + 88, player.posY + 52, player.posX + PL_WIDTH - 23, player.posY + PL_HEIGHT - 31, Cr2, false);
-        DrawBox(player.posX + 88 - CLOSE_RANGE, player.posY + 52, player.posX + PL_WIDTH - 23 + CLOSE_RANGE, player.posY + PL_HEIGHT - 31, Cr3, false);
+        DrawBox(player.posX + 88, player.posY + 52, player.posX + PL_WIDTH - 83, player.posY + PL_HEIGHT - 31, Cr2, false);
+        DrawBox(player.posX + 88 - CLOSE_RANGE, player.posY + 52, player.posX + PL_WIDTH - 83 + CLOSE_RANGE, player.posY + PL_HEIGHT - 31, Cr3, false);
     }
     else
     {
-        DrawBox(player.posX + 24, player.posY + 52, player.posX + PL_WIDTH - 89, player.posY + PL_HEIGHT - 31, Cr2, false);
-        DrawBox(player.posX + 24 - CLOSE_RANGE, player.posY + 52, player.posX + PL_WIDTH - 89 + CLOSE_RANGE, player.posY + PL_HEIGHT - 31, Cr3, false);
+        DrawBox(player.posX + 24, player.posY + 52, player.posX + PL_WIDTH - 149, player.posY + PL_HEIGHT - 31, Cr2, false);
+        DrawBox(player.posX + 24 - CLOSE_RANGE, player.posY + 52, player.posX + PL_WIDTH - 149 + CLOSE_RANGE, player.posY + PL_HEIGHT - 31, Cr3, false);
     }
+
+    for (int i = 0; i < PL_BULLET_MAX; i++)
+    {
+        if (pl_bullet[i].get_pl_exist(&pl_bullet[i]) == false)
+        {
+            continue;
+        }
+        pl_bullet[i].pl_draw(&pl_bullet[i]);
+    }
+
     //---------------------------------------------------------------------------------------------------------
 }
 

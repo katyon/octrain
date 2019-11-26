@@ -21,12 +21,19 @@ public:
     static void draw(void);     // •`‰æˆ—
     static void end(void);      // I—¹ˆ—
 
+    enum PATTERN
+    {
+        N_Diffusion, N_Homing, N_Column,
+        SPK_1, SPK_2, SPK_3
+    };
+
 private:
     int state = 0;
     int hit_timer = 0;
     int damaged_timer = 0;
     int close_damaged_timer = 0;
     int at_timer = 0;
+    int move_timer = 0;
     float pivot_posX = 0;   // boss‚Ì’†SÀ•W
     float pivot_posY = 0;
     float speed = 0;
@@ -34,10 +41,7 @@ private:
     int sub_hp = 0;
     int N_attack = 0;
     int SPK_attack = 0;
+    int rnd_move_pattern = 0;
     bool detect_attack = false;
-    enum PATTERN
-    {
-        N_Diffusion, N_Homing,N_Column,
-        SPK_1,SPK_2,SPK_3
-    };
+    bool detect_useSPK = false;
 };

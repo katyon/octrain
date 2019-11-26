@@ -66,11 +66,13 @@ void GAME::update(void)
         //---------------------------------------------
         if (PLAYER::detect_reverse == true)
         {
+            // ê⁄êGîªíË
             if (PLAYER::detect_hit == false && GAME::hitcheck_rect(PLAYER::posX + 88, PLAYER::posY + 52, 128, 248, BOSS::posX, BOSS::posY, BOSS_WIDTH, BOSS_HEIGHT) == true)
             {
                 PLAYER::detect_hit = true;
                 PLAYER::hp -= 50;
             }
+            // ãﬂê⁄îªíË
             if (GAME::hitcheck_rect(PLAYER::posX + 88, PLAYER::posY + 52, 128 + CLOSE_RANGE, 248, BOSS::posX, BOSS::posY, BOSS_WIDTH, BOSS_HEIGHT) == true)
             {
                 PLAYER::detect_closerange = true;
@@ -79,15 +81,16 @@ void GAME::update(void)
             {
                 PLAYER::detect_closerange = false;
             }
-
         }
         else
         {
+            // ê⁄êGîªíË
             if (PLAYER::detect_hit == false && GAME::hitcheck_rect(PLAYER::posX + 24, PLAYER::posY + 52, 128, 248, BOSS::posX, BOSS::posY, BOSS_WIDTH, BOSS_HEIGHT) == true)
             {
                 PLAYER::detect_hit = true;
                 PLAYER::hp -= 50;
             }
+            // ãﬂê⁄îªíË
             if (GAME::hitcheck_rect(PLAYER::posX + 24 - CLOSE_RANGE, PLAYER::posY + 52, 128 + CLOSE_RANGE, 248, BOSS::posX, BOSS::posY, BOSS_WIDTH, BOSS_HEIGHT) == true)
             {
                 PLAYER::detect_closerange = true;

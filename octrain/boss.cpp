@@ -27,6 +27,7 @@ void BOSS::init(void)
     boss.damaged_timer = 0;
     boss.close_damaged_timer = 0;
     boss.at_timer = 0;
+    boss.move_timer = 0;
     boss.posX = GAME_SCREEN_WIDTH / 2;
     boss.posY = 0;
     boss.pivot_posX = 0;
@@ -36,12 +37,14 @@ void BOSS::init(void)
     boss.sub_hp = BOSS_HP;
     boss.N_attack = 0;
     boss.SPK_attack = 0;
+    boss.rnd_move_pattern = 0;
     boss.detect_hit = false;
     boss.detect_deth = false;
     boss.detect_attack = false;
     boss.detect_reverse = false;
     boss.detect_damaged = false;
     boss.detect_close_damaged = false;
+    boss.detect_useSPK = false;
 }
 
 // çXêVèàóù
@@ -163,59 +166,8 @@ void BOSS::update(void)
     }
 #pragma endregion
 
-    // âìãóó£çUåÇ
-    if (CheckHitKey(KEY_INPUT_X))
-    {
-        boss.detect_damaged = true;
-    }
-    if (boss.detect_damaged == true)
-    {
-        boss.damaged_timer++;
-        if (boss.damaged_timer > 60)
-        {
-            boss.damaged_timer = 0;
-            boss.detect_damaged = false;
-        }
-    }
-    // ãﬂãóó£çUåÇ
-    if (CheckHitKey(KEY_INPUT_Z))
-    {
-        boss.detect_close_damaged = true;
-    }
-    if (boss.detect_close_damaged == true)
-    {
-        boss.close_damaged_timer++;
-        if (boss.close_damaged_timer > 60)
-        {
-            boss.close_damaged_timer = 0;
-            boss.detect_close_damaged = false;
-        }
-    }
+
     //------------------------------
-    // à⁄ìÆêßå¿
-    if (boss.posX < 0)
-    {
-        boss.posX = 0;
-    }
-    if (boss.posX > GAME_SCREEN_WIDTH - BOSS_WIDTH)
-    {
-        boss.posX = GAME_SCREEN_WIDTH - BOSS_WIDTH;
-    }
-    if (boss.posY < 0)
-    {
-        boss.posY = 0;
-    }
-    if (boss.posY > GAME_SCREEN_HEIGHT - BOSS_HEIGHT)
-    {
-        boss.posY = GAME_SCREEN_HEIGHT - BOSS_HEIGHT;
-    }
-
-    // hp
-    if (boss.detect_hit == true)
-    {
-        boss.hp -= 50;
-    }
-
     if (BOSS::posX < PLAYER::posX)
     {
         boss.detect_reverse = true;
@@ -224,28 +176,147 @@ void BOSS::update(void)
     {
         boss.detect_reverse = false;
     }
-
-    // N_attack
-    switch (boss.N_attack)
+    // hp
+    if (boss.detect_hit == true)
     {
-    case N_Diffusion:
-        break;
-    case N_Homing:
-        break;
-    case N_Column:
-        break;
+        boss.hp -= 50;
     }
-    // SPK
-    switch (boss.SPK_attack)
+
+    if (boss.detect_attack == true)
     {
-    case SPK_1:
-        break;
-    case SPK_2:
-        break;
-    case SPK_3:
-        break;
+        if (boss.detect_useSPK == true)
+        {
+            // SPK
+            switch (boss.SPK_attack)
+            {
+            case SPK_1:
+                break;
+            case SPK_2:
+                break;
+            case SPK_3:
+                break;
+            }
+        }
+        else
+        {
+            // N_attack
+            switch (boss.N_attack)
+            {
+            case N_Diffusion:
+                break;
+            case N_Homing:
+                break;
+            case N_Column:
+                break;
+            }
+
+            // à⁄ìÆêßå¿
+            if (boss.posX < 0)
+            {
+                boss.posX = 0;
+            }
+            if (boss.posX > GAME_SCREEN_WIDTH - BOSS_WIDTH)
+            {
+                boss.posX = GAME_SCREEN_WIDTH - BOSS_WIDTH;
+            }
+            if (boss.posY < 0)
+            {
+                boss.posY = 0;
+            }
+            if (boss.posY > GAME_SCREEN_HEIGHT - BOSS_HEIGHT)
+            {
+                boss.posY = GAME_SCREEN_HEIGHT - BOSS_HEIGHT;
+            }
+        }
+    }
+    else
+    {
+        // move
+        switch (boss.rnd_move_pattern)
+        {
+        case 0:
+            // ê⁄ãﬂ
+            if (boss.move_timer > 200)
+            {
+                if (boss.posX < PLAYER::posX - 100)
+                {
+                    boss.posX += 5;
+                }
+                else if (boss.posX > PLAYER::posX + 100)
+                {
+                    boss.posX -= 5;
+                }
+                if (boss.posY < PLAYER::posY - 100)
+                {
+                    boss.posY += 2;
+                }
+                else if (boss.posY > PLAYER::posY + 100)
+                {
+                    boss.posY -= 2;
+                }
+                if (boss.move_timer > 500)
+                {
+                    boss.move_timer = 0;
+                    boss.rnd_move_pattern = 1;
+                }
+
+            }
+            break;
+        case 1:
+            // ó£íE
+            if (boss.move_timer > 200)
+            {
+                if (boss.posX > PLAYER::posX - 100)
+                {
+                    boss.posX += 5;
+                }
+                else if (boss.posX < PLAYER::posX + 100)
+                {
+                    boss.posX -= 5;
+                }
+                if (boss.posY < PLAYER::posY - 100)
+                {
+                    boss.posY += 2;
+                }
+                else if (boss.posY > PLAYER::posY + 100)
+                {
+                    boss.posY -= 2;
+                }
+                if (boss.move_timer > 500)
+                {
+                    boss.move_timer = 0;
+                }
+                if (boss.move_timer > 500)
+                {
+                    boss.move_timer = 0;
+                    boss.rnd_move_pattern = 0;
+                }
+            }
+            break;
+        case 2:
+            break;
+        }
+        boss.move_timer++;
+        // à⁄ìÆêßå¿
+        if (boss.posX < 0)
+        {
+            boss.posX = 0;
+        }
+        if (boss.posX > GAME_SCREEN_WIDTH - BOSS_WIDTH)
+        {
+            boss.posX = GAME_SCREEN_WIDTH - BOSS_WIDTH;
+        }
+        if (boss.posY < 0)
+        {
+            boss.posY = 0;
+        }
+        if (boss.posY > GAME_SCREEN_HEIGHT - BOSS_HEIGHT)
+        {
+            boss.posY = GAME_SCREEN_HEIGHT - BOSS_HEIGHT;
+        }
     }
 }
+
 
 // ï`âÊèàóù
 void BOSS::draw(void)
