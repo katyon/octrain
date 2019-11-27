@@ -6,6 +6,7 @@
 class GAME
 {
 public:
+    static int state;
     static int timer;
     static int spriteHND;
     static bool zoom_mode;  // true‚ÅƒY[ƒ€
@@ -19,7 +20,6 @@ public:
     static bool hitcheck_circle_withrect(float ax, float ay, int ar, float bx, float by, int bw, int bh);
 
 private:
-    int state = 0;
     int bgHND = 0;
     int zoomHND = 0;
 };

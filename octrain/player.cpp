@@ -61,321 +61,613 @@ void PLAYER::init(void)
 // çXêVèàóù
 void PLAYER::update(void)
 {
-    // debug--------------------------------------------------------
-    if (CheckHitKey(KEY_INPUT_A))
+    switch (GAME::state)
     {
-        player.posX -= player.speed;
-    }
-    if (CheckHitKey(KEY_INPUT_D))
-    {
-        player.posX += player.speed;
-    }
-    if (CheckHitKey(KEY_INPUT_W))
-    {
-        player.posY -= player.speed;
-    }
-    if (CheckHitKey(KEY_INPUT_S))
-    {
-        player.posY += player.speed;
-    }
-    //----------------------------------------------------------------
-    // à⁄ìÆ
+    case TITLE:
+#pragma region TITLE
+        // à⁄ìÆ
 #pragma region LeftThumb
-    if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Up))
-    {
-        player.posY -= player.speed;
-    }
-    if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Before_Upper_Right))
-    {
-        player.posX += player.speed / ROOT5;
-        player.posY -= player.speed / ROOT5 * 2;
-    }
-    if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Upper_Right))
-    {
-        player.posX += player.speed / ROOT2;
-        player.posY -= player.speed / ROOT2;
-    }
-    if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::After_Upper_Right))
-    {
-        player.posX += player.speed / ROOT5 * 2;
-        player.posY -= player.speed / ROOT5;
-    }
-    if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Right))
-    {
-        player.posX += player.speed;
-    }
-    if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Before_Lower_Right))
-    {
-        player.posX += player.speed / ROOT5 * 2;
-        player.posY += player.speed / ROOT5;
-    }
-    if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Lower_Right))
-    {
-        player.posX += player.speed / ROOT2;
-        player.posY += player.speed / ROOT2;
-    }
-    if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::After_Lower_Right))
-    {
-        player.posX += player.speed / ROOT5;
-        player.posY += player.speed / ROOT5 * 2;
-    }
-    if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Down))
-    {
-        player.posY += player.speed;
-    }
-    if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Before_Lower_Left))
-    {
-        player.posX -= player.speed / ROOT5;
-        player.posY += player.speed / ROOT5 * 2;
-    }
-    if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Lower_Left))
-    {
-        player.posX -= player.speed / ROOT2;
-        player.posY += player.speed / ROOT2;
-    }
-    if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::After_Lower_Left))
-    {
-        player.posX -= player.speed / ROOT5 * 2;
-        player.posY += player.speed / ROOT5;
-    }
-    if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Left))
-    {
-        player.posX -= player.speed;
-    }
-    if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Before_Upper_Left))
-    {
-        player.posX -= player.speed / ROOT5 * 2;
-        player.posY -= player.speed / ROOT5;
-    }
-    if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Upper_Left))
-    {
-        player.posX -= player.speed / ROOT2;
-        player.posY -= player.speed / ROOT2;
-    }
-    if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::After_Upper_Left))
-    {
-        player.posX -= player.speed / ROOT5;
-        player.posY -= player.speed / ROOT5 * 2;
-    }
-    if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Little_Up))
-    {
-        player.posY -= player.speed / 3;
-    }
-    if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Little_Right))
-    {
-        player.posX += player.speed / 3;
-    }
-    if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Little_Down))
-    {
-        player.posY += player.speed / 3;
-    }
-    if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Little_Left))
-    {
-        player.posX -= player.speed / 3;
-    }
-    if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Little_Upper_Right))
-    {
-        player.posX += player.speed / ROOT2 / 3;
-        player.posY -= player.speed / ROOT2 / 3;
-    }
-    if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Little_Lower_Right))
-    {
-        player.posX += player.speed / ROOT2 / 3;
-        player.posY += player.speed / ROOT2 / 3;
-    }
-    if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Little_Lower_Left))
-    {
-        player.posX -= player.speed / ROOT2 / 3;
-        player.posY += player.speed / ROOT2 / 3;
-    }
-    if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Little_Upper_Left))
-    {
-        player.posX -= player.speed / ROOT2 / 3;
-        player.posY -= player.speed / ROOT2 / 3;
-    }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Up))
+        {
+            player.posY -= player.speed;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Before_Upper_Right))
+        {
+            player.posX += player.speed / ROOT5;
+            player.posY -= player.speed / ROOT5 * 2;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Upper_Right))
+        {
+            player.posX += player.speed / ROOT2;
+            player.posY -= player.speed / ROOT2;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::After_Upper_Right))
+        {
+            player.posX += player.speed / ROOT5 * 2;
+            player.posY -= player.speed / ROOT5;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Right))
+        {
+            player.posX += player.speed;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Before_Lower_Right))
+        {
+            player.posX += player.speed / ROOT5 * 2;
+            player.posY += player.speed / ROOT5;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Lower_Right))
+        {
+            player.posX += player.speed / ROOT2;
+            player.posY += player.speed / ROOT2;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::After_Lower_Right))
+        {
+            player.posX += player.speed / ROOT5;
+            player.posY += player.speed / ROOT5 * 2;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Down))
+        {
+            player.posY += player.speed;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Before_Lower_Left))
+        {
+            player.posX -= player.speed / ROOT5;
+            player.posY += player.speed / ROOT5 * 2;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Lower_Left))
+        {
+            player.posX -= player.speed / ROOT2;
+            player.posY += player.speed / ROOT2;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::After_Lower_Left))
+        {
+            player.posX -= player.speed / ROOT5 * 2;
+            player.posY += player.speed / ROOT5;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Left))
+        {
+            player.posX -= player.speed;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Before_Upper_Left))
+        {
+            player.posX -= player.speed / ROOT5 * 2;
+            player.posY -= player.speed / ROOT5;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Upper_Left))
+        {
+            player.posX -= player.speed / ROOT2;
+            player.posY -= player.speed / ROOT2;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::After_Upper_Left))
+        {
+            player.posX -= player.speed / ROOT5;
+            player.posY -= player.speed / ROOT5 * 2;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Little_Up))
+        {
+            player.posY -= player.speed / 3;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Little_Right))
+        {
+            player.posX += player.speed / 3;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Little_Down))
+        {
+            player.posY += player.speed / 3;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Little_Left))
+        {
+            player.posX -= player.speed / 3;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Little_Upper_Right))
+        {
+            player.posX += player.speed / ROOT2 / 3;
+            player.posY -= player.speed / ROOT2 / 3;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Little_Lower_Right))
+        {
+            player.posX += player.speed / ROOT2 / 3;
+            player.posY += player.speed / ROOT2 / 3;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Little_Lower_Left))
+        {
+            player.posX -= player.speed / ROOT2 / 3;
+            player.posY += player.speed / ROOT2 / 3;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Little_Upper_Left))
+        {
+            player.posX -= player.speed / ROOT2 / 3;
+            player.posY -= player.speed / ROOT2 / 3;
+        }
 #pragma endregion
 
-    // à⁄ìÆêßå¿
-    if (player.detect_reverse == true)
-    {
-        if (player.posX < -88)
+        // à⁄ìÆêßå¿
+        if (player.detect_reverse == true)
         {
-            player.posX = -88;
-        }
-        if (player.posX > GAME_SCREEN_WIDTH - PL_WIDTH + 24)
-        {
-            player.posX = GAME_SCREEN_WIDTH - PL_WIDTH + 24;
-        }
-        if (player.posY < -52)
-        {
-            player.posY = -52;
-        }
-        if (player.posY > GAME_SCREEN_HEIGHT - PL_HEIGHT + 32)
-        {
-            player.posY = GAME_SCREEN_HEIGHT - PL_HEIGHT + 32;
-        }
-    }
-    else
-    {
-        if (player.posX < -24)
-        {
-            player.posX = -24;
-        }
-        if (player.posX > GAME_SCREEN_WIDTH - PL_WIDTH + 148)
-        {
-            player.posX = GAME_SCREEN_WIDTH - PL_WIDTH + 148;
-        }
-        if (player.posY < -52)
-        {
-            player.posY = -52;
-        }
-        if (player.posY > GAME_SCREEN_HEIGHT - PL_HEIGHT + 32)
-        {
-            player.posY = GAME_SCREEN_HEIGHT - PL_HEIGHT + 32;
-        }
-    }
-
-    // hit
-    if (player.detect_hit == true)
-    {
-        player.hit_timer++;
-        if (player.hit_timer > 100)
-        {
-            player.hit_timer = 0;
-            player.detect_hit = false;
-        }
-    }
-
-    // deth
-    if (player.hp <= 0)
-    {
-        player.hp = 0;
-        player.detect_deth = true;
-    }
-
-    // reverse
-    if (PLAYER::posX < BOSS::posX)
-    {
-        player.detect_reverse = true;
-    }
-    else
-    {
-        player.detect_reverse = false;
-    }
-
-    // closerange
-    // attack
-    if (player.detect_close_attack1 == true)
-    {
-        player.close_at1_timer++;
-        if (player.close_at1_timer > 20)
-        {
-            player.close_at1_timer = 0;
-            player.detect_close_attack1 = false;
-        }
-    }
-    if (player.detect_close_attack2 == true)
-    {
-        player.close_at2_timer++;
-        if (player.close_at2_timer > 20)
-        {
-            player.close_at2_timer = 0;
-            player.detect_close_attack2 = false;
-        }
-    }
-    if (player.detect_attack == true)
-    {
-        player.at_timer++;
-        if (player.at_timer > 20)
-        {
-            player.at_timer = 0;
-            player.detect_attack = false;
-        }
-    }
-
-    for (int i = 0; i < PL_BULLET_MAX; i++)
-    {
-        if (pl_bullet[i].get_pl_exist(&pl_bullet[i]) == false)
-        {
-            continue;
-        }
-        if (GAME::hitcheck_rect(pl_bullet[i].get_posX(&pl_bullet[i]), pl_bullet[i].get_posY(&pl_bullet[i]), 64, 64, BOSS::posX, BOSS::posY, BOSS_WIDTH, BOSS_HEIGHT) == true)
-        {
-            pl_bullet[i].set_pl_exist(&pl_bullet[i], false);
-            BOSS::hp -= player.power;
-        }
-    }
-
-    if (player.detect_closerange == true)
-    {
-        if (player.detect_close_attack1 == false)
-        {
-            if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_A))
+            if (player.posX < -88)
             {
-                player.power += 1;
-                player.detect_close_attack1 = true;
+                player.posX = -88;
+            }
+            if (player.posX > GAME_SCREEN_WIDTH - PL_WIDTH + 24)
+            {
+                player.posX = GAME_SCREEN_WIDTH - PL_WIDTH + 24;
+            }
+            if (player.posY < -52)
+            {
+                player.posY = -52;
+            }
+            if (player.posY > GAME_SCREEN_HEIGHT - PL_HEIGHT + 32)
+            {
+                player.posY = GAME_SCREEN_HEIGHT - PL_HEIGHT + 32;
             }
         }
         else
         {
-            if (player.detect_close_attack2 == false)
+            if (player.posX < -24)
+            {
+                player.posX = -24;
+            }
+            if (player.posX > GAME_SCREEN_WIDTH - PL_WIDTH + 148)
+            {
+                player.posX = GAME_SCREEN_WIDTH - PL_WIDTH + 148;
+            }
+            if (player.posY < -52)
+            {
+                player.posY = -52;
+            }
+            if (player.posY > GAME_SCREEN_HEIGHT - PL_HEIGHT + 32)
+            {
+                player.posY = GAME_SCREEN_HEIGHT - PL_HEIGHT + 32;
+            }
+        }
+
+        // reverse
+        if (PLAYER::posX < BOSS::posX)
+        {
+            player.detect_reverse = true;
+        }
+        else
+        {
+            player.detect_reverse = false;
+        }
+
+        // closerange
+        // attack
+        if (player.detect_close_attack1 == true)
+        {
+            player.close_at1_timer++;
+            if (player.close_at1_timer > 20)
+            {
+                player.close_at1_timer = 0;
+                player.detect_close_attack1 = false;
+            }
+        }
+        if (player.detect_close_attack2 == true)
+        {
+            player.close_at2_timer++;
+            if (player.close_at2_timer > 20)
+            {
+                player.close_at2_timer = 0;
+                player.detect_close_attack2 = false;
+            }
+        }
+        if (player.detect_attack == true)
+        {
+            player.at_timer++;
+            if (player.at_timer > 20)
+            {
+                player.at_timer = 0;
+                player.detect_attack = false;
+            }
+        }
+
+        for (int i = 0; i < PL_BULLET_MAX; i++)
+        {
+            if (pl_bullet[i].get_pl_exist(&pl_bullet[i]) == false)
+            {
+                continue;
+            }
+            if (GAME::hitcheck_rect(pl_bullet[i].get_posX(&pl_bullet[i]), pl_bullet[i].get_posY(&pl_bullet[i]), 64, 64, BOSS::posX, BOSS::posY, BOSS_WIDTH, BOSS_HEIGHT) == true)
+            {
+                pl_bullet[i].set_pl_exist(&pl_bullet[i], false);
+                BOSS::hp -= player.power;
+            }
+        }
+
+        if (player.detect_closerange == true)
+        {
+            if (player.detect_close_attack1 == false)
             {
                 if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_A))
                 {
-                    player.power += 2;
-                    player.detect_close_attack2 = true;
+                    player.power += 1;
+                    player.detect_close_attack1 = true;
                 }
             }
-        }
-    }
-
-    if (player.detect_attack == false)
-    {
-        if (player.bullet > 0 && Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_RIGHT_SHOULDER))
-        {
-            player.bullet -= 1;
-            player.detect_attack = true;
-            for (int i = 0; i < PL_BULLET_MAX; i++)
+            else
             {
-                if (pl_bullet[i].get_pl_exist(&pl_bullet[i]) == true)
+                if (player.detect_close_attack2 == false)
                 {
-                    continue;
+                    if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_A))
+                    {
+                        player.power += 2;
+                        player.detect_close_attack2 = true;
+                    }
                 }
-                pl_bullet[i].set_pl_exist(&pl_bullet[i], true);
-                player.bullet_count++;
-                break;
             }
         }
-    }
 
-    if (player.bullet <= 0)
-    {
-        player.bullet = 0;
-    }
-    else if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_LEFT_SHOULDER))
-    {
-        player.bullet -= 2;
-    }
-    if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_X))
-    {
-        player.bullet = player.init_bullet;
-        player.power = 10;
-    }
-
-    // í≤êÆ
-    player.sub_posX = player.posX + PL_WIDTH - 1;
-    player.sub_posY = player.posY + PL_HEIGHT - 1;
-    player.pivot_posX = player.posX + PL_WIDTH / 2;
-    player.pivot_posY = player.posY + PL_HEIGHT / 2;
-
-    // bullet
-    for (int i = 0; i < PL_BULLET_MAX; i++)
-    {
-        if (pl_bullet[i].get_pl_exist(&pl_bullet[i]) == false)
+        if (player.detect_attack == false)
         {
-            continue;
+            if (player.bullet > 0 && Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_RIGHT_SHOULDER))
+            {
+                player.bullet -= 1;
+                player.detect_attack = true;
+                for (int i = 0; i < PL_BULLET_MAX; i++)
+                {
+                    if (pl_bullet[i].get_pl_exist(&pl_bullet[i]) == true)
+                    {
+                        continue;
+                    }
+                    pl_bullet[i].set_pl_exist(&pl_bullet[i], true);
+                    player.bullet_count++;
+                    break;
+                }
+            }
         }
-        pl_bullet[i].pl_update(&pl_bullet[i]);
+
+        if (player.bullet <= 0)
+        {
+            player.bullet = 0;
+        }
+        else if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_LEFT_SHOULDER))
+        {
+            player.bullet -= 2;
+        }
+        if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_X))
+        {
+            player.bullet = player.init_bullet;
+            player.power = 10;
+        }
+
+        // í≤êÆ
+        player.sub_posX = player.posX + PL_WIDTH - 1;
+        player.sub_posY = player.posY + PL_HEIGHT - 1;
+        player.pivot_posX = player.posX + PL_WIDTH / 2;
+        player.pivot_posY = player.posY + PL_HEIGHT / 2;
+
+        // bullet
+        for (int i = 0; i < PL_BULLET_MAX; i++)
+        {
+            if (pl_bullet[i].get_pl_exist(&pl_bullet[i]) == false)
+            {
+                continue;
+            }
+            pl_bullet[i].pl_update(&pl_bullet[i]);
+        }
+#pragma endregion
+        break;
+
+    case UPDATE:
+#pragma region UPDATE
+        // debug--------------------------------------------------------
+        if (CheckHitKey(KEY_INPUT_A))
+        {
+            player.posX -= player.speed;
+        }
+        if (CheckHitKey(KEY_INPUT_D))
+        {
+            player.posX += player.speed;
+        }
+        if (CheckHitKey(KEY_INPUT_W))
+        {
+            player.posY -= player.speed;
+        }
+        if (CheckHitKey(KEY_INPUT_S))
+        {
+            player.posY += player.speed;
+        }
+        //----------------------------------------------------------------
+        // à⁄ìÆ
+#pragma region LeftThumb
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Up))
+        {
+            player.posY -= player.speed;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Before_Upper_Right))
+        {
+            player.posX += player.speed / ROOT5;
+            player.posY -= player.speed / ROOT5 * 2;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Upper_Right))
+        {
+            player.posX += player.speed / ROOT2;
+            player.posY -= player.speed / ROOT2;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::After_Upper_Right))
+        {
+            player.posX += player.speed / ROOT5 * 2;
+            player.posY -= player.speed / ROOT5;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Right))
+        {
+            player.posX += player.speed;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Before_Lower_Right))
+        {
+            player.posX += player.speed / ROOT5 * 2;
+            player.posY += player.speed / ROOT5;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Lower_Right))
+        {
+            player.posX += player.speed / ROOT2;
+            player.posY += player.speed / ROOT2;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::After_Lower_Right))
+        {
+            player.posX += player.speed / ROOT5;
+            player.posY += player.speed / ROOT5 * 2;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Down))
+        {
+            player.posY += player.speed;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Before_Lower_Left))
+        {
+            player.posX -= player.speed / ROOT5;
+            player.posY += player.speed / ROOT5 * 2;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Lower_Left))
+        {
+            player.posX -= player.speed / ROOT2;
+            player.posY += player.speed / ROOT2;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::After_Lower_Left))
+        {
+            player.posX -= player.speed / ROOT5 * 2;
+            player.posY += player.speed / ROOT5;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Left))
+        {
+            player.posX -= player.speed;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Before_Upper_Left))
+        {
+            player.posX -= player.speed / ROOT5 * 2;
+            player.posY -= player.speed / ROOT5;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Upper_Left))
+        {
+            player.posX -= player.speed / ROOT2;
+            player.posY -= player.speed / ROOT2;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::After_Upper_Left))
+        {
+            player.posX -= player.speed / ROOT5;
+            player.posY -= player.speed / ROOT5 * 2;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Little_Up))
+        {
+            player.posY -= player.speed / 3;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Little_Right))
+        {
+            player.posX += player.speed / 3;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Little_Down))
+        {
+            player.posY += player.speed / 3;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Little_Left))
+        {
+            player.posX -= player.speed / 3;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Little_Upper_Right))
+        {
+            player.posX += player.speed / ROOT2 / 3;
+            player.posY -= player.speed / ROOT2 / 3;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Little_Lower_Right))
+        {
+            player.posX += player.speed / ROOT2 / 3;
+            player.posY += player.speed / ROOT2 / 3;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Little_Lower_Left))
+        {
+            player.posX -= player.speed / ROOT2 / 3;
+            player.posY += player.speed / ROOT2 / 3;
+        }
+        if (Input::GetInstance()->GetLeftThumb(PL_1, THUMB::Little_Upper_Left))
+        {
+            player.posX -= player.speed / ROOT2 / 3;
+            player.posY -= player.speed / ROOT2 / 3;
+        }
+#pragma endregion
+
+        // à⁄ìÆêßå¿
+        if (player.detect_reverse == true)
+        {
+            if (player.posX < -88)
+            {
+                player.posX = -88;
+            }
+            if (player.posX > GAME_SCREEN_WIDTH - PL_WIDTH + 24)
+            {
+                player.posX = GAME_SCREEN_WIDTH - PL_WIDTH + 24;
+            }
+            if (player.posY < -52)
+            {
+                player.posY = -52;
+            }
+            if (player.posY > GAME_SCREEN_HEIGHT - PL_HEIGHT + 32)
+            {
+                player.posY = GAME_SCREEN_HEIGHT - PL_HEIGHT + 32;
+            }
+        }
+        else
+        {
+            if (player.posX < -24)
+            {
+                player.posX = -24;
+            }
+            if (player.posX > GAME_SCREEN_WIDTH - PL_WIDTH + 148)
+            {
+                player.posX = GAME_SCREEN_WIDTH - PL_WIDTH + 148;
+            }
+            if (player.posY < -52)
+            {
+                player.posY = -52;
+            }
+            if (player.posY > GAME_SCREEN_HEIGHT - PL_HEIGHT + 32)
+            {
+                player.posY = GAME_SCREEN_HEIGHT - PL_HEIGHT + 32;
+            }
+        }
+
+        // hit
+        if (player.detect_hit == true)
+        {
+            player.hit_timer++;
+            if (player.hit_timer > 100)
+            {
+                player.hit_timer = 0;
+                player.detect_hit = false;
+            }
+        }
+
+        // deth
+        if (player.hp <= 0)
+        {
+            player.hp = 0;
+            player.detect_deth = true;
+        }
+
+        // reverse
+        if (PLAYER::posX < BOSS::posX)
+        {
+            player.detect_reverse = true;
+        }
+        else
+        {
+            player.detect_reverse = false;
+        }
+
+        // closerange
+        // attack
+        if (player.detect_close_attack1 == true)
+        {
+            player.close_at1_timer++;
+            if (player.close_at1_timer > 20)
+            {
+                player.close_at1_timer = 0;
+                player.detect_close_attack1 = false;
+            }
+        }
+        if (player.detect_close_attack2 == true)
+        {
+            player.close_at2_timer++;
+            if (player.close_at2_timer > 20)
+            {
+                player.close_at2_timer = 0;
+                player.detect_close_attack2 = false;
+            }
+        }
+        if (player.detect_attack == true)
+        {
+            player.at_timer++;
+            if (player.at_timer > 20)
+            {
+                player.at_timer = 0;
+                player.detect_attack = false;
+            }
+        }
+
+        for (int i = 0; i < PL_BULLET_MAX; i++)
+        {
+            if (pl_bullet[i].get_pl_exist(&pl_bullet[i]) == false)
+            {
+                continue;
+            }
+            if (GAME::hitcheck_rect(pl_bullet[i].get_posX(&pl_bullet[i]), pl_bullet[i].get_posY(&pl_bullet[i]), 64, 64, BOSS::posX, BOSS::posY, BOSS_WIDTH, BOSS_HEIGHT) == true)
+            {
+                pl_bullet[i].set_pl_exist(&pl_bullet[i], false);
+                BOSS::hp -= player.power;
+            }
+        }
+
+        if (player.detect_closerange == true)
+        {
+            if (player.detect_close_attack1 == false)
+            {
+                if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_A))
+                {
+                    player.power += 1;
+                    player.detect_close_attack1 = true;
+                }
+            }
+            else
+            {
+                if (player.detect_close_attack2 == false)
+                {
+                    if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_A))
+                    {
+                        player.power += 2;
+                        player.detect_close_attack2 = true;
+                    }
+                }
+            }
+        }
+
+        if (player.detect_attack == false)
+        {
+            if (player.bullet > 0 && Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_RIGHT_SHOULDER))
+            {
+                player.bullet -= 1;
+                player.detect_attack = true;
+                for (int i = 0; i < PL_BULLET_MAX; i++)
+                {
+                    if (pl_bullet[i].get_pl_exist(&pl_bullet[i]) == true)
+                    {
+                        continue;
+                    }
+                    pl_bullet[i].set_pl_exist(&pl_bullet[i], true);
+                    player.bullet_count++;
+                    break;
+                }
+            }
+        }
+
+        if (player.bullet <= 0)
+        {
+            player.bullet = 0;
+        }
+        else if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_LEFT_SHOULDER))
+        {
+            player.bullet -= 2;
+        }
+        if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_X))
+        {
+            player.bullet = player.init_bullet;
+            player.power = 10;
+        }
+
+        // í≤êÆ
+        player.sub_posX = player.posX + PL_WIDTH - 1;
+        player.sub_posY = player.posY + PL_HEIGHT - 1;
+        player.pivot_posX = player.posX + PL_WIDTH / 2;
+        player.pivot_posY = player.posY + PL_HEIGHT / 2;
+
+        // bullet
+        for (int i = 0; i < PL_BULLET_MAX; i++)
+        {
+            if (pl_bullet[i].get_pl_exist(&pl_bullet[i]) == false)
+            {
+                continue;
+            }
+            pl_bullet[i].pl_update(&pl_bullet[i]);
+        }
+#pragma endregion
+        break;
     }
 }
 

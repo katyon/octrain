@@ -13,6 +13,7 @@
 // ƒCƒ“ƒXƒ^ƒ“ƒXéŒ¾ ---------------------------------------------------------------------------------
 GAME game;
 
+int GAME::state = 0;
 int GAME::timer = 0;
 int GAME::spriteHND = 0;
 bool GAME::zoom_mode = false;
@@ -22,7 +23,7 @@ bool GAME::zoom_mode = false;
 void GAME::init(void)
 {
     GAME::timer = 0;
-    game.state = 0;
+    game.state = INIT_TITLE;
     game.bgHND = LoadGraph("Data\\Images\\game_bg.png");
     game.spriteHND = LoadGraph("Data\\Images\\game_sprite.png");
     game.zoomHND = MakeGraph(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT);
@@ -36,6 +37,84 @@ void GAME::update(void)
 {
     switch (game.state)
     {
+    case INIT_TITLE:
+
+        game.state = TITLE;
+        break;
+    case TITLE:
+
+        PLAYER::update();
+        BOSS::update();
+        // debug ------------------------------------------
+        if (CheckHitKey(KEY_INPUT_1))
+        {
+            COMMON::nextScene = SCENE_TITLE;
+        }
+        if (CheckHitKey(KEY_INPUT_2))
+        {
+            COMMON::nextScene = SCENE_GAME;
+        }
+        if (CheckHitKey(KEY_INPUT_3))
+        {
+            COMMON::nextScene = SCENE_RESULT;
+        }
+        if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_DPAD_UP))
+        {
+            if (game.zoom_mode == false)
+                game.zoom_mode = true;
+            else
+                game.zoom_mode = false;
+        }
+        //---------------------------------------------
+        if (PLAYER::detect_reverse == true)
+        {
+            // ÚG”»’è
+            if (PLAYER::detect_hit == false && GAME::hitcheck_rect(PLAYER::posX + 88, PLAYER::posY + 52, 128, 248, BOSS::posX, BOSS::posY, BOSS_WIDTH, BOSS_HEIGHT) == true)
+            {
+                PLAYER::detect_hit = true;
+                PLAYER::hp -= 50;
+            }
+            // ‹ßÚ”»’è
+            if (GAME::hitcheck_rect(PLAYER::posX + 88, PLAYER::posY + 52, 128 + CLOSE_RANGE, 248, BOSS::posX, BOSS::posY, BOSS_WIDTH, BOSS_HEIGHT) == true)
+            {
+                PLAYER::detect_closerange = true;
+            }
+            else
+            {
+                PLAYER::detect_closerange = false;
+            }
+        }
+        else
+        {
+            // ÚG”»’è
+            if (PLAYER::detect_hit == false && GAME::hitcheck_rect(PLAYER::posX + 24, PLAYER::posY + 52, 128, 248, BOSS::posX, BOSS::posY, BOSS_WIDTH, BOSS_HEIGHT) == true)
+            {
+                PLAYER::detect_hit = true;
+                PLAYER::hp -= 50;
+            }
+            // ‹ßÚ”»’è
+            if (GAME::hitcheck_rect(PLAYER::posX + 24 - CLOSE_RANGE, PLAYER::posY + 52, 128 + CLOSE_RANGE, 248, BOSS::posX, BOSS::posY, BOSS_WIDTH, BOSS_HEIGHT) == true)
+            {
+                PLAYER::detect_closerange = true;
+            }
+            else
+            {
+                PLAYER::detect_closerange = false;
+            }
+        }
+        // Ž€–SŽž
+        if (PLAYER::detect_deth == true)
+        {
+            game.state = NEXT;
+        }
+        // pose
+        if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_START))
+        {
+            game.state = POSE;
+        }
+
+        game.timer++;
+        break;
     case INIT:
 
         game.state = UPDATE;

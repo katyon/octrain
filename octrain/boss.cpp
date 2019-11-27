@@ -67,7 +67,7 @@ void BOSS::init(void)
     boss.detect_useSPK = false;
 
     effect_HND = LoadGraph("Data\\Images\\zangeki.png");
-    
+
 }
 
 // çXêVèàóù
@@ -204,91 +204,68 @@ void BOSS::update(void)
         key_buf[n] = key[n];
     }
     // key_end-------
-    // âìãóó£çUåÇ
-    if (key_trg[KEY_INPUT_X])
+    switch (GAME::state)
     {
-        //mg_debug
-        rad = GetRand(248);
-        rad01 = GetRand(248);
-        rad02 = GetRand(248);
-        rad03 = GetRand(248);
-        flashing_timer = 0;
-        
-        //-----------------
-
-        boss.detect_damaged = true;
-    }
-    if (boss.detect_damaged == true)
-    {
-        boss.damaged_timer++;
-        if (boss.damaged_timer > 15)
+    case TITLE:
+#pragma region TITLE
+        // âìãóó£çUåÇ
+        if (key_trg[KEY_INPUT_X])
         {
-            boss.damaged_timer = 0;
-            boss.detect_damaged = false;
+            //mg_debug
+            rad = GetRand(248);
+            rad01 = GetRand(248);
+            rad02 = GetRand(248);
+            rad03 = GetRand(248);
+            flashing_timer = 0;
+
+            //-----------------
+
+            boss.detect_damaged = true;
         }
-    }
-    // ãﬂãóó£çUåÇ
-    if (key_trg[KEY_INPUT_Z])
-    {
-        //mg_debug---------
-        rad = GetRand(360);
-        flashing_timer = 0;
-        
-        //------------------
-
-        boss.detect_close_damaged = true;
-    }
-    if (boss.detect_close_damaged == true)
-    {
-        boss.close_damaged_timer++;
-        if (boss.close_damaged_timer > 10)
+        if (boss.detect_damaged == true)
         {
-            boss.close_damaged_timer = 0;
-            boss.detect_close_damaged = false;
-        }
-    }
-    //------------------------------
-    if (BOSS::posX < PLAYER::posX)
-    {
-        boss.detect_reverse = true;
-    }
-    else
-    {
-        boss.detect_reverse = false;
-    }
-    // hp
-    if (boss.detect_hit == true)
-    {
-        boss.hp -= 50;
-    }
-
-    if (boss.detect_attack == true)
-    {
-        if (boss.detect_useSPK == true)
-        {
-            // SPK
-            switch (boss.SPK_attack)
+            boss.damaged_timer++;
+            if (boss.damaged_timer > 15)
             {
-            case SPK_1:
-                break;
-            case SPK_2:
-                break;
-            case SPK_3:
-                break;
+                boss.damaged_timer = 0;
+                boss.detect_damaged = false;
             }
+        }
+        // ãﬂãóó£çUåÇ
+        if (key_trg[KEY_INPUT_Z])
+        {
+            //mg_debug---------
+            rad = GetRand(360);
+            flashing_timer = 0;
+
+            //------------------
+
+            boss.detect_close_damaged = true;
+        }
+        if (boss.detect_close_damaged == true)
+        {
+            boss.close_damaged_timer++;
+            if (boss.close_damaged_timer > 10)
+            {
+                boss.close_damaged_timer = 0;
+                boss.detect_close_damaged = false;
+            }
+        }
+        //------------------------------
+        if (BOSS::posX < PLAYER::posX)
+        {
+            boss.detect_reverse = true;
         }
         else
         {
-            // N_attack
-            switch (boss.N_attack)
-            {
-            case N_Diffusion:
-                break;
-            case N_Homing:
-                break;
-            case N_Column:
-                break;
-            }
+            boss.detect_reverse = false;
+        }
+        // hp
+        if (boss.detect_hit == true)
+        {
+            boss.hp -= 50;
+        }
+
 
             // à⁄ìÆêßå¿
             if (boss.posX < 0)
@@ -307,92 +284,203 @@ void BOSS::update(void)
             {
                 boss.posY = GAME_SCREEN_HEIGHT - BOSS_HEIGHT;
             }
-        }
-    }
-    else
-    {
-        // move
-        switch (boss.rnd_move_pattern)
+        
+#pragma endregion
+        break;
+    case UPDATE:
+#pragma region UPDATE
+        // âìãóó£çUåÇ
+        if (key_trg[KEY_INPUT_X])
         {
-        case 0:
-            // ê⁄ãﬂ
-            if (boss.move_timer > 200)
+            //mg_debug
+            rad = GetRand(248);
+            rad01 = GetRand(248);
+            rad02 = GetRand(248);
+            rad03 = GetRand(248);
+            flashing_timer = 0;
+
+            //-----------------
+
+            boss.detect_damaged = true;
+        }
+        if (boss.detect_damaged == true)
+        {
+            boss.damaged_timer++;
+            if (boss.damaged_timer > 15)
             {
-                if (boss.posX < PLAYER::posX - 100)
+                boss.damaged_timer = 0;
+                boss.detect_damaged = false;
+            }
+        }
+        // ãﬂãóó£çUåÇ
+        if (key_trg[KEY_INPUT_Z])
+        {
+            //mg_debug---------
+            rad = GetRand(360);
+            flashing_timer = 0;
+
+            //------------------
+
+            boss.detect_close_damaged = true;
+        }
+        if (boss.detect_close_damaged == true)
+        {
+            boss.close_damaged_timer++;
+            if (boss.close_damaged_timer > 10)
+            {
+                boss.close_damaged_timer = 0;
+                boss.detect_close_damaged = false;
+            }
+        }
+        //------------------------------
+        if (BOSS::posX < PLAYER::posX)
+        {
+            boss.detect_reverse = true;
+        }
+        else
+        {
+            boss.detect_reverse = false;
+        }
+        // hp
+        if (boss.detect_hit == true)
+        {
+            boss.hp -= 50;
+        }
+
+        if (boss.detect_attack == true)
+        {
+            if (boss.detect_useSPK == true)
+            {
+                // SPK
+                switch (boss.SPK_attack)
                 {
-                    boss.posX += 5;
-                }
-                else if (boss.posX > PLAYER::posX + 100)
-                {
-                    boss.posX -= 5;
-                }
-                if (boss.posY < PLAYER::posY - 100)
-                {
-                    boss.posY += 2;
-                }
-                else if (boss.posY > PLAYER::posY + 100)
-                {
-                    boss.posY -= 2;
-                }
-                if (boss.move_timer > 500)
-                {
-                    boss.move_timer = 0;
-                    boss.rnd_move_pattern = 1;
+                case SPK_1:
+                    break;
+                case SPK_2:
+                    break;
+                case SPK_3:
+                    break;
                 }
             }
-            break;
-        case 1:
-            // ó£íE
-            if (boss.move_timer > 200)
+            else
             {
-                if (boss.posX > PLAYER::posX - 100)
+                // N_attack
+                switch (boss.N_attack)
                 {
-                    boss.posX += 5;
+                case N_Diffusion:
+                    break;
+                case N_Homing:
+                    break;
+                case N_Column:
+                    break;
                 }
-                else if (boss.posX < PLAYER::posX + 100)
+
+                // à⁄ìÆêßå¿
+                if (boss.posX < 0)
                 {
-                    boss.posX -= 5;
+                    boss.posX = 0;
                 }
-                if (boss.posY < PLAYER::posY - 100)
+                if (boss.posX > GAME_SCREEN_WIDTH - BOSS_WIDTH)
                 {
-                    boss.posY += 2;
+                    boss.posX = GAME_SCREEN_WIDTH - BOSS_WIDTH;
                 }
-                else if (boss.posY > PLAYER::posY + 100)
+                if (boss.posY < 0)
                 {
-                    boss.posY -= 2;
+                    boss.posY = 0;
                 }
-                if (boss.move_timer > 500)
+                if (boss.posY > GAME_SCREEN_HEIGHT - BOSS_HEIGHT)
                 {
-                    boss.move_timer = 0;
-                }
-                if (boss.move_timer > 500)
-                {
-                    boss.move_timer = 0;
-                    boss.rnd_move_pattern = 0;
+                    boss.posY = GAME_SCREEN_HEIGHT - BOSS_HEIGHT;
                 }
             }
-            break;
-        case 2:
-            break;
         }
-        boss.move_timer++;
-        // à⁄ìÆêßå¿
-        if (boss.posX < 0)
+        else
         {
-            boss.posX = 0;
+            // move
+            switch (boss.rnd_move_pattern)
+            {
+            case 0:
+                // ê⁄ãﬂ
+                if (boss.move_timer > 200)
+                {
+                    if (boss.posX < PLAYER::posX - 100)
+                    {
+                        boss.posX += 5;
+                    }
+                    else if (boss.posX > PLAYER::posX + 100)
+                    {
+                        boss.posX -= 5;
+                    }
+                    if (boss.posY < PLAYER::posY - 100)
+                    {
+                        boss.posY += 2;
+                    }
+                    else if (boss.posY > PLAYER::posY + 100)
+                    {
+                        boss.posY -= 2;
+                    }
+                    if (boss.move_timer > 500)
+                    {
+                        boss.move_timer = 0;
+                        boss.rnd_move_pattern = 1;
+                    }
+                }
+                break;
+            case 1:
+                // ó£íE
+                if (boss.move_timer > 200)
+                {
+                    if (boss.posX > PLAYER::posX - 100)
+                    {
+                        boss.posX += 5;
+                    }
+                    else if (boss.posX < PLAYER::posX + 100)
+                    {
+                        boss.posX -= 5;
+                    }
+                    if (boss.posY < PLAYER::posY - 100)
+                    {
+                        boss.posY += 2;
+                    }
+                    else if (boss.posY > PLAYER::posY + 100)
+                    {
+                        boss.posY -= 2;
+                    }
+                    if (boss.move_timer > 500)
+                    {
+                        boss.move_timer = 0;
+                    }
+                    if (boss.move_timer > 500)
+                    {
+                        boss.move_timer = 0;
+                        boss.rnd_move_pattern = 0;
+                    }
+                }
+                break;
+            case 2:
+                break;
+            }
+            boss.move_timer++;
+            // à⁄ìÆêßå¿
+            if (boss.posX < 0)
+            {
+                boss.posX = 0;
+            }
+            if (boss.posX > GAME_SCREEN_WIDTH - BOSS_WIDTH)
+            {
+                boss.posX = GAME_SCREEN_WIDTH - BOSS_WIDTH;
+            }
+            if (boss.posY < 0)
+            {
+                boss.posY = 0;
+            }
+            if (boss.posY > GAME_SCREEN_HEIGHT - BOSS_HEIGHT)
+            {
+                boss.posY = GAME_SCREEN_HEIGHT - BOSS_HEIGHT;
+            }
         }
-        if (boss.posX > GAME_SCREEN_WIDTH - BOSS_WIDTH)
-        {
-            boss.posX = GAME_SCREEN_WIDTH - BOSS_WIDTH;
-        }
-        if (boss.posY < 0)
-        {
-            boss.posY = 0;
-        }
-        if (boss.posY > GAME_SCREEN_HEIGHT - BOSS_HEIGHT)
-        {
-            boss.posY = GAME_SCREEN_HEIGHT - BOSS_HEIGHT;
-        }
+#pragma endregion
+        break;
     }
 }
 
@@ -411,7 +499,7 @@ void BOSS::draw(void)
 
     //Mg_debug(hit effect)-------------
     flashing_timer++;
-    flash = sinf(flashing_timer * 0.175)- 0.1;
+    flash = sinf(flashing_timer * 0.175) - 0.1;
 
     if (boss.detect_close_damaged == true)
     {
@@ -426,7 +514,7 @@ void BOSS::draw(void)
     {
         unsigned int  Cr = GetColor(255, 255, 255);
         SetDrawBlendMode(DX_BLENDMODE_ALPHA, 150);
-        DrawCircle(boss.posX + 5 , boss.posY + rad, flash * 45, Cr, TRUE);
+        DrawCircle(boss.posX + 5, boss.posY + rad, flash * 45, Cr, TRUE);
         DrawCircle(boss.posX + 40, boss.posY + rad01, flash * 35, Cr, TRUE);
         DrawCircle(boss.posX + 90, boss.posY + rad02, flash * 60, Cr, TRUE);
         DrawCircle(boss.posX + 140, boss.posY + rad03, flash * 25, Cr, TRUE);
