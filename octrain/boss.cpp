@@ -1,6 +1,8 @@
 // インクルード -------------------------------------------------------------------------------------
 #include "DxLib.h"
 
+#include <math.h>
+
 #include "boss.h"
 #include "common.h"
 #include "input.h"
@@ -9,6 +11,23 @@
 
 // インスタンス宣言 ---------------------------------------------------------------------------------
 BOSS boss;
+
+// debug---------------
+int rad = 0;
+int rad01 = 0;
+int rad02 = 0;
+int rad03 = 0;
+
+int effect_HND = 0;
+int zangeki_HND = 0;
+
+char key_buf[256];
+
+float flash = 0;
+float flashing_timer = 0;
+
+
+//------------------------------
 
 float BOSS::posX = 0;
 float BOSS::posY = 0;
@@ -46,6 +65,9 @@ void BOSS::init(void)
     boss.detect_damaged = false;
     boss.detect_close_damaged = false;
     boss.detect_useSPK = false;
+
+    effect_HND = LoadGraph("Data\\Images\\zangeki.png");
+    
 }
 
 // 更新処理
@@ -167,6 +189,64 @@ void BOSS::update(void)
     }
 #pragma endregion
 
+    flashing_timer++;
+    flash = sinf(flashing_timer);
+
+    // key-----
+    char key[256] = { 0 };
+    char key_trg[256] = { 0 };
+
+    GetHitKeyStateAll(key);
+
+    for (int n = 0; n < 256; n++)
+    {
+        if (key[n] && !(key_buf[n]))key_trg[n] = key[n];
+        key_buf[n] = key[n];
+    }
+    // key_end-------
+    // 遠距離攻撃
+    if (key_trg[KEY_INPUT_X])
+    {
+        //mg_debug
+        rad = GetRand(248);
+        rad01 = GetRand(248);
+        rad02 = GetRand(248);
+        rad03 = GetRand(248);
+        flashing_timer = 0;
+        
+        //-----------------
+
+        boss.detect_damaged = true;
+    }
+    if (boss.detect_damaged == true)
+    {
+        boss.damaged_timer++;
+        if (boss.damaged_timer > 15)
+        {
+            boss.damaged_timer = 0;
+            boss.detect_damaged = false;
+        }
+    }
+    // 近距離攻撃
+    if (key_trg[KEY_INPUT_Z])
+    {
+        //mg_debug---------
+        rad = GetRand(360);
+        flashing_timer = 0;
+        
+        //------------------
+
+        boss.detect_close_damaged = true;
+    }
+    if (boss.detect_close_damaged == true)
+    {
+        boss.close_damaged_timer++;
+        if (boss.close_damaged_timer > 10)
+        {
+            boss.close_damaged_timer = 0;
+            boss.detect_close_damaged = false;
+        }
+    }
     //------------------------------
     if (BOSS::posX < PLAYER::posX)
     {
@@ -328,6 +408,33 @@ void BOSS::draw(void)
     {
         DrawRectGraphF(boss.posX, boss.posY, 1416 + BOSS_WIDTH * (GAME::timer / 7 % 4), 0, BOSS_WIDTH, BOSS_HEIGHT, GAME::spriteHND, true, false, false);
     }
+
+    //Mg_debug(hit effect)-------------
+    flashing_timer++;
+    flash = sinf(flashing_timer * 0.175)- 0.1;
+
+    if (boss.detect_close_damaged == true)
+    {
+        SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180);
+        DrawRotaGraph3(boss.posX + BOSS_WIDTH / 2, boss.posY + BOSS_HEIGHT / 2, 100, 25, 5, flash, rad, effect_HND, TRUE);
+        //DrawRotaGraph3(boss.posX + BOSS_WIDTH / 2, boss.posY + BOSS_HEIGHT / 2, 100, 25, 3, flash, rad + 50, effect_HND, TRUE);
+        SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
+
+    }
+
+    if (boss.detect_damaged == true)
+    {
+        unsigned int  Cr = GetColor(255, 255, 255);
+        SetDrawBlendMode(DX_BLENDMODE_ALPHA, 150);
+        DrawCircle(boss.posX + 5 , boss.posY + rad, flash * 45, Cr, TRUE);
+        DrawCircle(boss.posX + 40, boss.posY + rad01, flash * 35, Cr, TRUE);
+        DrawCircle(boss.posX + 90, boss.posY + rad02, flash * 60, Cr, TRUE);
+        DrawCircle(boss.posX + 140, boss.posY + rad03, flash * 25, Cr, TRUE);
+        SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
+    }
+
+    //----------------------
+
     DrawRectGraph(GAME_SCREEN_WIDTH / 2, 0, 2088, 64, BOSS_HP, 64, GAME::spriteHND, true, false, false);
     DrawRectGraph(GAME_SCREEN_WIDTH / 2 + BOSS_HP - boss.hp, 0, 2088, 0, boss.hp, 64, GAME::spriteHND, true, false, false);
     //debug-----
@@ -342,6 +449,6 @@ void BOSS::draw(void)
 // 終了処理
 void BOSS::end(void)
 {
-
+    DeleteGraph(effect_HND);
 }
 
