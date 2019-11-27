@@ -21,11 +21,23 @@ void BULLET::pl_update(BULLET* p)
     switch (p->state)
     {
     case INIT:
-        p->posX = PLAYER::posX;
-        p->posY = PLAYER::posY;
+        if (PLAYER::detect_reverse == true)
+        {
+            p->posX = PLAYER::posX;
+            p->posY = PLAYER::posY;
+            p->speed = -PL_BULLET_SPEED;
+
+            p->reverse_buf = true;
+        }
+        else
+        {
+            p->posX = PLAYER::posX + 160;
+            p->posY = PLAYER::posY;
+            p->speed = PL_BULLET_SPEED;
+
+            p->reverse_buf = false;
+        }
         p->angle = 0;
-        p->range = 0;
-        p->speed = 10;
         p->angle_speed = 5;
         for (int i = 0; i < 360; i++)
         {
@@ -69,6 +81,16 @@ void BULLET::pl_update(BULLET* p)
         float ver_y = sin(p->angle * PI / 180);
         float hor_x = -ver_y; //‚±‚±‚ç‚Ö‚ñ‚Í•„†‚ð+‚É‚µ‚½‚è-‚É‚µ‚½‚è‚µ‚½‚ç“®‚¢‚½(–³’m)
         float hor_y = -ver_x; // ã‚Æˆê
+        if (p->reverse_buf == true)
+        {
+            hor_x = ver_y;
+            hor_y = ver_x;
+        }
+        else
+        {
+            hor_x = -ver_y;
+            hor_y = -ver_x;
+        }
 
         //‘½•ªworld‚ÆverAworld‚Æhor‚Ì“àÏ‚ðŽæ‚Á‚Ä‚é
         float rel_ver = world_x * ver_x + world_y * ver_y;
@@ -196,6 +218,27 @@ void BULLET::end(BULLET* p)
 
 }
 
+int BULLET::get_posX(BULLET* p)
+{
+    return p->posX;
+}
+
+int BULLET::get_posY(BULLET* p)
+{
+    return p->posY;
+}
+
+
+bool BULLET::get_pl_exist(BULLET* p)
+{
+    return p->pl_exist;
+}
+
+bool BULLET::get_boss_exist(BULLET* p)
+{
+    return p->boss_exist;
+}
+
 void BULLET::set_pl_exist(BULLET* p, bool b)
 {
     if (b == false)
@@ -212,14 +255,4 @@ void BULLET::set_boss_exist(BULLET* p, bool b)
         p->state = 0;
     }
     p->boss_exist = b;
-}
-
-bool BULLET::get_pl_exist(BULLET* p)
-{
-    return p->pl_exist;
-}
-
-bool BULLET::get_boss_exist(BULLET* p)
-{
-    return p->boss_exist;
 }

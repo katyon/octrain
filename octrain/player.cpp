@@ -48,7 +48,7 @@ void PLAYER::init(void)
     player.init_bullet = 10;
     player.bullet = player.init_bullet;
     player.bullet_count = 0;
-    player.power = 0;
+    player.power = 10;
     player.detect_hit = false;
     player.detect_closerange = false;
     player.detect_deth = false;
@@ -77,27 +77,6 @@ void PLAYER::update(void)
     if (CheckHitKey(KEY_INPUT_S))
     {
         player.posY += player.speed;
-    }
-    if (Input::GetInstance()->GetButton(PL_1, XINPUT_BUTTON_RIGHT_SHOULDER))
-    {
-        player.hp = player.init_hp;
-    }
-    if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_LEFT_SHOULDER))
-    {
-        player.hp -= 10;
-    }
-    if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_DPAD_RIGHT))
-    {
-        for (int i = 0; i < PL_BULLET_MAX; i++)
-        {
-            if (pl_bullet[i].get_pl_exist(&pl_bullet[i]) == true)
-            {
-                continue;
-            }
-            pl_bullet[i].set_pl_exist(&pl_bullet[i], true);
-            player.bullet_count++;
-            break;
-        }
     }
     //----------------------------------------------------------------
     // à⁄ìÆ
@@ -314,13 +293,26 @@ void PLAYER::update(void)
         }
     }
 
+    for (int i = 0; i < PL_BULLET_MAX; i++)
+    {
+        if (pl_bullet[i].get_pl_exist(&pl_bullet[i]) == false)
+        {
+            continue;
+        }
+        if (GAME::hitcheck_rect(pl_bullet[i].get_posX(&pl_bullet[i]), pl_bullet[i].get_posY(&pl_bullet[i]), 64, 64, BOSS::posX, BOSS::posY, BOSS_WIDTH, BOSS_HEIGHT) == true)
+        {
+            pl_bullet[i].set_pl_exist(&pl_bullet[i], false);
+            BOSS::hp -= player.power;
+        }
+    }
+
     if (player.detect_closerange == true)
     {
         if (player.detect_close_attack1 == false)
         {
             if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_A))
             {
-                player.power += 10;
+                player.power += 1;
                 player.detect_close_attack1 = true;
             }
         }
@@ -330,20 +322,28 @@ void PLAYER::update(void)
             {
                 if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_A))
                 {
-                    player.power += 10;
+                    player.power += 2;
                     player.detect_close_attack2 = true;
                 }
             }
         }
     }
-    else
+
+    if (player.detect_attack == false)
     {
-        if (player.detect_attack == false)
+        if (player.bullet > 0 && Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_RIGHT_SHOULDER))
         {
-            if (player.bullet > 0 && Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_A))
+            player.bullet -= 1;
+            player.detect_attack = true;
+            for (int i = 0; i < PL_BULLET_MAX; i++)
             {
-                player.bullet -= 1;
-                player.detect_attack = true;
+                if (pl_bullet[i].get_pl_exist(&pl_bullet[i]) == true)
+                {
+                    continue;
+                }
+                pl_bullet[i].set_pl_exist(&pl_bullet[i], true);
+                player.bullet_count++;
+                break;
             }
         }
     }
@@ -352,14 +352,14 @@ void PLAYER::update(void)
     {
         player.bullet = 0;
     }
-    else if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_B))
+    else if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_LEFT_SHOULDER))
     {
         player.bullet -= 2;
     }
     if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_X))
     {
         player.bullet = player.init_bullet;
-        player.power = 0;
+        player.power = 10;
     }
 
     // í≤êÆ

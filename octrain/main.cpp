@@ -6,7 +6,6 @@
 #include "player.h"
 #include "scene_game.h"
 #include "scene_result.h"
-#include "scene_title.h"
 
 // インスタンス宣言 ---------------------------------------------------------------------------------
 COMMON common;
@@ -35,15 +34,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
     // ゲームシーンの設定
-    COMMON::curScene = SCENE_TITLE;
-    COMMON::nextScene = SCENE_TITLE;
+    COMMON::curScene = SCENE_GAME;
+    COMMON::nextScene = SCENE_GAME;
 
     // ライブラリの初期化
     if (DxLib_Init() < 0)
         return -1;
 
     // タイトルの初期設定
-    TITLE::init();
+    GAME::init();
 
     // フォントデータの読み込み
     common.font = CreateFontToHandle("GauFontLoveRocketNeo", 70, 1, DX_FONTTYPE_ANTIALIASING);
@@ -73,9 +72,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 #pragma region NowEnd
             switch (COMMON::curScene)
             {
-            case SCENE_TITLE:
-                TITLE::end();
-                break;
             case SCENE_GAME:
                 GAME::end();
                 break;
@@ -88,9 +84,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 #pragma region NextInitialize
             switch (COMMON::nextScene)
             {
-            case SCENE_TITLE:
-                TITLE::init();
-                break;
             case SCENE_GAME:
                 GAME::init();
                 break;
@@ -106,9 +99,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 #pragma region NowUpdate
         switch (COMMON::curScene)
         {
-        case SCENE_TITLE:
-            TITLE::update();
-            break;
         case SCENE_GAME:
             GAME::update();
             break;
@@ -122,9 +112,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 #pragma region NowDraw
         switch (COMMON::curScene)
         {
-        case SCENE_TITLE:
-            TITLE::draw();
-            break;
         case SCENE_GAME:
             GAME::draw();
             break;
@@ -142,9 +129,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 #pragma region NowEnd
     switch (COMMON::curScene)
     {
-    case SCENE_TITLE:
-        TITLE::end();
-        break;
     case SCENE_GAME:
         GAME::end();
         break;

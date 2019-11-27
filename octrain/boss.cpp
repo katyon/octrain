@@ -12,6 +12,7 @@ BOSS boss;
 
 float BOSS::posX = 0;
 float BOSS::posY = 0;
+int BOSS::hp = 0;
 bool BOSS::detect_hit = false;
 bool BOSS::detect_deth = false;
 bool BOSS::detect_reverse = false;
@@ -166,7 +167,6 @@ void BOSS::update(void)
     }
 #pragma endregion
 
-
     //------------------------------
     if (BOSS::posX < PLAYER::posX)
     {
@@ -259,7 +259,6 @@ void BOSS::update(void)
                     boss.move_timer = 0;
                     boss.rnd_move_pattern = 1;
                 }
-
             }
             break;
         case 1:

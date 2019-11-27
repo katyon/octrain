@@ -283,15 +283,43 @@ bool GAME::hitcheck_rect(float ax, float ay, int aw, int ah, float bx, float by,
     return false;
 }
 
-
 bool GAME::hitcheck_circle(float ax, float ay, int ar, float bx, float by, int br)
 {
     float a = ax - bx;
     float b = ay - by;
     float c = a * a + b * b;
-    c = sqrt(c);
+    c = sqrtf(c);
 
     if (c <= ar + br)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool GAME::hitcheck_circle_withrect(float cx, float cy, int cr, float rx, float ry, int rw, int rh)
+{
+    if (cx > rx && cx<(rx + rw) && cy>(ry - cr) && cy < (ry + rh + cr))
+    {
+        return true;
+    }
+    if (cx > (rx - cr) && cx<(rx + rw + cr) && cy>ry && cy < (ry + rh))
+    {
+        return true;
+    }
+    if (((rx - cx) * (rx - cx) + (ry - cy) * (ry - cy)) < cr * cr)
+    {
+        return true;
+    }
+    if (((rx + rw - cx) * (rx + rw - cx) + (ry - cy) * (ry - cy)) < cr * cr)
+    {
+        return true;
+    }
+    if (((rx + rw - cx) * (rx + rw - cx) + (ry + rh - cy) * (ry + rh - cy)) < cr * cr)
+    {
+        return true;
+    }
+    if (((rx - cx) * (rx - cx) + (ry + rh - cy) * (ry + rh - cy)) < cr * cr)
     {
         return true;
     }

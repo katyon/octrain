@@ -10,6 +10,7 @@ class BOSS
 public:
     static float posX;
     static float posY;
+    static int hp;
     static bool detect_hit;     // true‚Å“–‚½‚Á‚Ä‚é
     static bool detect_deth;    // true‚Å€–S
     static bool detect_reverse; // true‚Å”½“]
@@ -37,7 +38,6 @@ private:
     float pivot_posX = 0;   // boss‚Ì’†SÀ•W
     float pivot_posY = 0;
     float speed = 0;
-    int hp = 0;
     int sub_hp = 0;
     int N_attack = 0;
     int SPK_attack = 0;

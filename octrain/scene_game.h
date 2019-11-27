@@ -16,6 +16,7 @@ public:
     static void end(void);       // I—¹ˆ—
     static bool hitcheck_rect(float ax, float ay, int aw, int ah, float bx, float by, int bw, int bh);
     static bool hitcheck_circle(float ax, float ay, int ar, float bx, float by, int br);
+    static bool hitcheck_circle_withrect(float ax, float ay, int ar, float bx, float by, int bw, int bh);
 
 private:
     int state = 0;

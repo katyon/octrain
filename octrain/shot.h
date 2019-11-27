@@ -1,7 +1,8 @@
 #pragma once
 
-#define PL_BULLET_MAX  (256)
-#define BOSS_BULLET_MAX  (256)
+#define PL_BULLET_MAX   (256)
+#define PL_BULLET_SPEED (20)
+#define BOSS_BULLET_MAX (256)
 
 
 class BULLET //íe
@@ -13,11 +14,12 @@ public:
     void boss_updete(BULLET* p, int pattern_num);
     void boss_draw(BULLET* p, int pattern_num);
     void end(BULLET* p);        // èIóπèàóù
-    void set_pl_exist(BULLET* p, bool b);
-    void set_boss_exist(BULLET* p, bool b);
+    int get_posX(BULLET* p);
+    int get_posY(BULLET* p);
     bool get_pl_exist(BULLET* p);
     bool get_boss_exist(BULLET* p);
-    void TurningDirection(BULLET* p, int angle_speed, float posX, float posY);
+    void set_pl_exist(BULLET* p, bool b);
+    void set_boss_exist(BULLET* p, bool b);
 
 private:
     int state = 0;
@@ -31,4 +33,6 @@ private:
     float fcos[360] = { 0 };
     bool pl_exist = false;
     bool boss_exist = false;
+    bool reverse_buf = false;
+
 };
