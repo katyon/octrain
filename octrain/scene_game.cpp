@@ -18,6 +18,13 @@ int GAME::timer = 0;
 int GAME::spriteHND = 0;
 bool GAME::zoom_mode = false;
 
+int GAME::tutorial_lv = 0;
+//se-----------
+int GAME::bgmHND = 0;
+int GAME::damage_seHND = 0;
+//-------------
+
+
 // ŠÖ”ŽÀ‘Ì ----------------------------------------------------------------------------------------
 // ‰ŠúÝ’è
 void GAME::init(void)
@@ -28,9 +35,25 @@ void GAME::init(void)
     game.spriteHND = LoadGraph("Data\\Images\\game_sprite.png");
     game.zoomHND = MakeGraph(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT);
 
+    //se-------------------
+    game.bgmHND = LoadSoundMem("Data\\Sounds\\main_BGM.wav");
+    game.damage_seHND = LoadSoundMem("Data\\Sounds\\Player_damage.wav");
+
+    //---------------------
+
     PLAYER::init();
     BOSS::init();
 }
+
+void GAME::game_init(void)
+{
+    GAME::timer = 0;
+    game.state = UPDATE;
+
+    PLAYER::init();
+    BOSS::init();
+}
+
 
 // XVˆ—
 void GAME::update(void)
@@ -38,11 +61,14 @@ void GAME::update(void)
     switch (game.state)
     {
     case INIT_TITLE:
-
+        PLAYER::posX = 100;
+        PLAYER::posY = 400;
+        BOSS::posX = 1600;
+        BOSS::posY = 400;
+        PlaySoundMem(game.bgmHND, DX_PLAYTYPE_BACK, TRUE);
         game.state = TITLE;
         break;
     case TITLE:
-
         PLAYER::update();
         BOSS::update();
         // debug ------------------------------------------
@@ -71,6 +97,7 @@ void GAME::update(void)
             // ÚG”»’è
             if (PLAYER::detect_hit == false && GAME::hitcheck_rect(PLAYER::posX + 88, PLAYER::posY + 52, 128, 248, BOSS::posX, BOSS::posY, BOSS_WIDTH, BOSS_HEIGHT) == true)
             {
+                PlaySoundMem(game.damage_seHND, DX_PLAYTYPE_BACK, TRUE);
                 PLAYER::detect_hit = true;
                 PLAYER::hp -= 50;
             }
@@ -89,6 +116,7 @@ void GAME::update(void)
             // ÚG”»’è
             if (PLAYER::detect_hit == false && GAME::hitcheck_rect(PLAYER::posX + 24, PLAYER::posY + 52, 128, 248, BOSS::posX, BOSS::posY, BOSS_WIDTH, BOSS_HEIGHT) == true)
             {
+                PlaySoundMem(game.damage_seHND, DX_PLAYTYPE_BACK, TRUE);
                 PLAYER::detect_hit = true;
                 PLAYER::hp -= 50;
             }
@@ -114,14 +142,51 @@ void GAME::update(void)
         }
 
         game.timer++;
+
+        switch (GAME::tutorial_lv)
+        {
+        case LEVEL1:
+            if (PLAYER::posX > 200)
+            {
+                GAME::tutorial_lv = LEVEL2;
+            }
+            break;
+        case LEVEL2:
+            if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_A))
+            {
+                GAME::tutorial_lv = LEVEL3;
+            }
+            break;
+        case LEVEL3:
+            if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_RIGHT_SHOULDER))
+            {
+                GAME::tutorial_lv = LEVEL4;
+            }
+            break;
+        case LEVEL4:
+            if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_LEFT_SHOULDER))
+            {
+                GAME::tutorial_lv = LEVEL5;
+            }
+            break;
+        case LEVEL5:
+            if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_X))
+            {
+                GAME::tutorial_lv = LEVEL6;
+            }
+        }
+
         break;
+
     case INIT:
+        game.game_init();
 
         game.state = UPDATE;
         break;
     case UPDATE:
         PLAYER::update();
         BOSS::update();
+
         // debug ------------------------------------------
         if (CheckHitKey(KEY_INPUT_1))
         {
@@ -334,6 +399,33 @@ void GAME::draw(void)
             DrawFormatString(0, 100, Cr, "RightThumb:Little_Upper_Left");
     }
 #pragma endregion
+    //int blink_timer = blink_timer++;
+    int blink = game.timer % 40 / 20;
+    int blink_stick = game.timer % 80 / 20;
+    if (GAME::tutorial_lv == LEVEL1)
+    {
+        DrawRectGraph(PLAYER::posX + 150, PLAYER::posY - 50, 2088 + (blink_stick * 70), 472, 70, 70, game.spriteHND, TRUE, FALSE);
+    }
+    if (GAME::tutorial_lv == LEVEL2)
+    {
+        DrawRectGraph(PLAYER::posX + 100, PLAYER::posY - 50, 2088 + (blink * 214) , 252, 214, 60, game.spriteHND, TRUE, FALSE);
+        DrawRectGraph(PLAYER::posX + 0, PLAYER::posY - 400, 1416, 744, 702, 300, game.spriteHND, TRUE, FALSE);
+    }
+    if (GAME::tutorial_lv == LEVEL3)
+    {
+        DrawRectGraph(PLAYER::posX + 100, PLAYER::posY - 50, 2088 + (blink * 190), 422, 190, 50, game.spriteHND, TRUE, FALSE);
+        DrawRectGraph(PLAYER::posX + 0, PLAYER::posY - 400, 2118, 744, 702, 300, game.spriteHND, TRUE, FALSE);
+    }
+    if (GAME::tutorial_lv == LEVEL4)
+    {
+        DrawRectGraph(PLAYER::posX + 100, PLAYER::posY - 50, 2088 + (blink * 260), 372, 260, 50, game.spriteHND, TRUE, FALSE);
+        DrawRectGraph(PLAYER::posX + 0, PLAYER::posY - 400, 1416, 1044, 702, 300, game.spriteHND, TRUE, FALSE);
+    }
+    if (GAME::tutorial_lv == LEVEL5)
+    {
+        DrawRectGraph(PLAYER::posX + 100, PLAYER::posY - 50, 2088 + (blink * 230), 312, 230, 60, game.spriteHND, TRUE, FALSE);
+        DrawRectGraph(PLAYER::posX + 0, PLAYER::posY - 400, 2118, 1044, 702, 300, game.spriteHND, TRUE, FALSE);
+    }
 
     GetDrawScreenGraph(0, 0, GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, game.zoomHND);
     if (GAME::zoom_mode == true)

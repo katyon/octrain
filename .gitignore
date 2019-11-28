@@ -14,3 +14,6 @@ octrain/octrain.sdf
 octrain/x64/
 >>>>>>> katyo_develop
 >>>>>>> bf4875caab5e1a1327a23332492f7d7cac98696b
+octrain/Data/Sounds/main_BGM.wav
+octrain/Data/Sounds/gameclear.wav
+octrain/Data/Sounds/gameover.wav

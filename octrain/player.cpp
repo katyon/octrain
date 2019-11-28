@@ -17,10 +17,16 @@ float PLAYER::posY = 0;
 float PLAYER::pivot_posX = 0;
 float PLAYER::pivot_posY = 0;
 int PLAYER::hp = 0;
+int PLAYER::guard_timer = 0;
 bool PLAYER::detect_hit = false;
 bool PLAYER::detect_closerange = false;
 bool PLAYER::detect_deth = false;
 bool PLAYER::detect_reverse = false;
+
+int PLAYER::zangeki_seHND = 0;
+int PLAYER::shot_seHND = 0;
+int PLAYER::guard_seHND = 0;
+int PLAYER::reload_seHND = 0;
 // ŠÖ”ŽÀ‘Ì ----------------------------------------------------------------------------------------
 // ‰ŠúÝ’è
 void PLAYER::init(void)
@@ -56,6 +62,12 @@ void PLAYER::init(void)
     player.detect_attack = false;
     player.detect_close_attack1 = false;
     player.detect_close_attack2 = false;
+    player.guard_timer = 0;
+
+    player.zangeki_seHND = LoadSoundMem("Data\\Sounds\\zangeki.wav");
+    player.shot_seHND = LoadSoundMem("Data\\Sounds\\shot.wav");
+    player.guard_seHND = LoadSoundMem("Data\\Sounds\\guard.wav");
+    player.reload_seHND = LoadSoundMem("Data\\Sounds\\reload.wav");
 }
 
 // XVˆ—
@@ -220,7 +232,16 @@ void PLAYER::update(void)
                 player.posY = GAME_SCREEN_HEIGHT - PL_HEIGHT + 32;
             }
         }
-
+        // hit
+        if (player.detect_hit == true)
+        {
+            player.hit_timer++;
+            if (player.hit_timer > 100)
+            {
+                player.hit_timer = 0;
+                player.detect_hit = false;
+            }
+        }
         // reverse
         if (PLAYER::posX < BOSS::posX)
         {
@@ -301,6 +322,7 @@ void PLAYER::update(void)
         {
             if (player.bullet > 0 && Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_RIGHT_SHOULDER))
             {
+                PlaySoundMem(player.shot_seHND, DX_PLAYTYPE_BACK, TRUE);
                 player.bullet -= 1;
                 player.detect_attack = true;
                 for (int i = 0; i < PL_BULLET_MAX; i++)
@@ -322,10 +344,13 @@ void PLAYER::update(void)
         }
         else if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_LEFT_SHOULDER))
         {
+            PlaySoundMem(player.guard_seHND, DX_PLAYTYPE_BACK, FALSE);
+            guard_timer++;
             player.bullet -= 2;
         }
         if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_X))
         {
+            PlaySoundMem(player.reload_seHND, DX_PLAYTYPE_BACK, FALSE);
             player.bullet = player.init_bullet;
             player.power = 10;
         }

@@ -43,4 +43,10 @@ private:
     bool detect_attack = false;         // true:攻撃中
     bool detect_close_attack1 = false;  // true:攻撃中
     bool detect_close_attack2 = false;  // true:攻撃中
+
+    static int guard_timer; //ガードエフェクト用
+    static int zangeki_seHND;
+    static int shot_seHND;
+    static int guard_seHND;
+    static int reload_seHND;
 };
