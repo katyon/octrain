@@ -46,4 +46,10 @@ private:
     int efHND = 0;
     int ef_timer = 0;
     bool ef = false;
+
+    static int guard_timer; //ガードエフェクト用
+    static int zangeki_seHND;
+    static int shot_seHND;
+    static int guard_seHND;
+    static int reload_seHND;
 };
