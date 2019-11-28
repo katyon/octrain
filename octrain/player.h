@@ -43,4 +43,7 @@ private:
     bool detect_attack = false;         // true:UŒ‚’†
     bool detect_close_attack1 = false;  // true:UŒ‚’†
     bool detect_close_attack2 = false;  // true:UŒ‚’†
+    int efHND = 0;
+    int ef_timer = 0;
+    bool ef = false;
 };

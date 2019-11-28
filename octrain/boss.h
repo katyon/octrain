@@ -44,4 +44,7 @@ private:
     int rnd_move_pattern = 0;
     bool detect_attack = false;
     bool detect_useSPK = false;
+    bool once_damaged = false;
+    bool once_close_damaged = false;
+    bool once_at = false;
 };

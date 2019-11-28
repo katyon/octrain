@@ -23,7 +23,7 @@ bool GAME::zoom_mode = false;
 void GAME::init(void)
 {
     GAME::timer = 0;
-    game.state = INIT_TITLE;
+    game.state = INIT;
     game.bgHND = LoadGraph("Data\\Images\\game_bg.png");
     game.spriteHND = LoadGraph("Data\\Images\\game_sprite.png");
     game.zoomHND = MakeGraph(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT);
@@ -64,6 +64,7 @@ void GAME::update(void)
                 game.zoom_mode = true;
             else
                 game.zoom_mode = false;
+
         }
         //---------------------------------------------
         if (PLAYER::detect_reverse == true)
@@ -209,8 +210,9 @@ void GAME::draw(void)
 {
     DrawGraph(0, 0, game.bgHND, true);
 
-    PLAYER::draw();
     BOSS::draw();
+    PLAYER::draw();
+
     // debug-----------
     unsigned int  Cr = GetColor(200, 0, 0);
     DrawFormatString(0, 0, Cr, "ƒ^ƒCƒgƒ‹(1)");

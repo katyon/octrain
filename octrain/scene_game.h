@@ -22,4 +22,5 @@ public:
 private:
     int bgHND = 0;
     int zoomHND = 0;
+    int efHND = 0;
 };
