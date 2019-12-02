@@ -30,7 +30,7 @@ int GAME::damage_seHND = 0;
 void GAME::init(void)
 {
     GAME::timer = 0;
-    game.state = INIT;
+    game.state = INIT_TITLE;
     game.bgHND = LoadGraph("Data\\Images\\game_bg.png");
     game.spriteHND = LoadGraph("Data\\Images\\game_sprite.png");
     game.zoomHND = MakeGraph(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT);
@@ -38,6 +38,7 @@ void GAME::init(void)
     //se-------------------
     game.bgmHND = LoadSoundMem("Data\\Sounds\\main_BGM.wav");
     game.damage_seHND = LoadSoundMem("Data\\Sounds\\Player_damage.wav");
+    game.titleHND = LoadGraph("Data\\Images\\title.png");
 
     //---------------------
 
@@ -48,7 +49,7 @@ void GAME::init(void)
 void GAME::game_init(void)
 {
     GAME::timer = 0;
-    game.state = UPDATE;
+    game.state = INIT;
 
     PLAYER::init();
     BOSS::init();
@@ -72,27 +73,27 @@ void GAME::update(void)
         PLAYER::update();
         BOSS::update();
         // debug ------------------------------------------
-        if (CheckHitKey(KEY_INPUT_1))
-        {
-            COMMON::nextScene = SCENE_TITLE;
-        }
-        if (CheckHitKey(KEY_INPUT_2))
-        {
-            COMMON::nextScene = SCENE_GAME;
-        }
-        if (CheckHitKey(KEY_INPUT_3))
-        {
-            COMMON::nextScene = SCENE_RESULT;
-        }
-        if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_DPAD_UP))
-        {
-            if (game.zoom_mode == false)
-                game.zoom_mode = true;
-            else
-                game.zoom_mode = false;
+        //if (CheckHitKey(KEY_INPUT_1))
+        //{
+        //    COMMON::nextScene = SCENE_TITLE;
+        //}
+        //if (CheckHitKey(KEY_INPUT_2))
+        //{
+        //    COMMON::nextScene = SCENE_GAME;
+        //}
+        //if (CheckHitKey(KEY_INPUT_3))
+        //{
+        //    COMMON::nextScene = SCENE_RESULT;
+        //}
+        //if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_DPAD_UP))
+        //{
+        //    if (game.zoom_mode == false)
+        //        game.zoom_mode = true;
+        //    else
+        //        game.zoom_mode = false;
 
-        }
-        //---------------------------------------------
+        //}
+        ////---------------------------------------------
         if (PLAYER::detect_reverse == true)
         {
             // 接触判定
@@ -175,6 +176,10 @@ void GAME::update(void)
             {
                 GAME::tutorial_lv = LEVEL6;
             }
+        case LEVEL6:
+            game.state = INIT;
+            GAME::tutorial_lv = LEVEL1;
+            break;
         }
 
         break;
@@ -189,25 +194,25 @@ void GAME::update(void)
         BOSS::update();
 
         // debug ------------------------------------------
-        if (CheckHitKey(KEY_INPUT_1))
-        {
-            COMMON::nextScene = SCENE_TITLE;
-        }
-        if (CheckHitKey(KEY_INPUT_2))
-        {
-            COMMON::nextScene = SCENE_GAME;
-        }
-        if (CheckHitKey(KEY_INPUT_3))
-        {
-            COMMON::nextScene = SCENE_RESULT;
-        }
-        if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_DPAD_UP))
-        {
-            if (game.zoom_mode == false)
-                game.zoom_mode = true;
-            else
-                game.zoom_mode = false;
-        }
+        //if (CheckHitKey(KEY_INPUT_1))
+        //{
+        //    COMMON::nextScene = SCENE_TITLE;
+        //}
+        //if (CheckHitKey(KEY_INPUT_2))
+        //{
+        //    COMMON::nextScene = SCENE_GAME;
+        //}
+        //if (CheckHitKey(KEY_INPUT_3))
+        //{
+        //    COMMON::nextScene = SCENE_RESULT;
+        //}
+        //if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_DPAD_UP))
+        //{
+        //    if (game.zoom_mode == false)
+        //        game.zoom_mode = true;
+        //    else
+        //        game.zoom_mode = false;
+        //}
         //---------------------------------------------
         if (PLAYER::detect_reverse == true)
         {
@@ -279,7 +284,7 @@ void GAME::draw(void)
     PLAYER::draw();
 
     // debug-----------
-    unsigned int  Cr = GetColor(200, 0, 0);
+ /*   unsigned int  Cr = GetColor(200, 0, 0);
     DrawFormatString(0, 0, Cr, "タイトル(1)");
     DrawFormatString(0, 20, Cr, "ゲーム　(2)");
     DrawFormatString(0, 40, Cr, "リザルト(3)");
@@ -398,35 +403,40 @@ void GAME::draw(void)
         if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Little_Lower_Left))
             DrawFormatString(0, 100, Cr, "RightThumb:Little_Lower_Left");
         if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Little_Upper_Left))
-            DrawFormatString(0, 100, Cr, "RightThumb:Little_Upper_Left");
-    }
+            DrawFormatString(0, 100, Cr, "RightThumb:Little_Upper_Left");*/
+    //}
 #pragma endregion
     //int blink_timer = blink_timer++;
     int blink = game.timer % 40 / 20;
     int blink_stick = game.timer % 80 / 20;
-    if (GAME::tutorial_lv == LEVEL1)
+    if (game.state==TITLE)
     {
-        DrawRectGraph(PLAYER::posX + 150, PLAYER::posY - 50, 2088 + (blink_stick * 70), 472, 70, 70, game.spriteHND, TRUE, FALSE);
-    }
-    if (GAME::tutorial_lv == LEVEL2)
-    {
-        DrawRectGraph(PLAYER::posX + 100, PLAYER::posY - 50, 2088 + (blink * 214) , 252, 214, 60, game.spriteHND, TRUE, FALSE);
-        DrawRectGraph(PLAYER::posX + 0, PLAYER::posY - 400, 1416, 744, 702, 300, game.spriteHND, TRUE, FALSE);
-    }
-    if (GAME::tutorial_lv == LEVEL3)
-    {
-        DrawRectGraph(PLAYER::posX + 100, PLAYER::posY - 50, 2088 + (blink * 190), 422, 190, 50, game.spriteHND, TRUE, FALSE);
-        DrawRectGraph(PLAYER::posX + 0, PLAYER::posY - 400, 2118, 744, 702, 300, game.spriteHND, TRUE, FALSE);
-    }
-    if (GAME::tutorial_lv == LEVEL4)
-    {
-        DrawRectGraph(PLAYER::posX + 100, PLAYER::posY - 50, 2088 + (blink * 260), 372, 260, 50, game.spriteHND, TRUE, FALSE);
-        DrawRectGraph(PLAYER::posX + 0, PLAYER::posY - 400, 1416, 1044, 702, 300, game.spriteHND, TRUE, FALSE);
-    }
-    if (GAME::tutorial_lv == LEVEL5)
-    {
-        DrawRectGraph(PLAYER::posX + 100, PLAYER::posY - 50, 2088 + (blink * 230), 312, 230, 60, game.spriteHND, TRUE, FALSE);
-        DrawRectGraph(PLAYER::posX + 0, PLAYER::posY - 400, 2118, 1044, 702, 300, game.spriteHND, TRUE, FALSE);
+        DrawGraph(GAME_SCREEN_WIDTH / 2 - 190, 40, game.titleHND, true);
+
+        if (GAME::tutorial_lv == LEVEL1)
+        {
+            DrawRectGraph(PLAYER::posX + 150, PLAYER::posY - 50, 2088 + (blink_stick * 70), 472, 70, 70, game.spriteHND, TRUE, FALSE);
+        }
+        else if (GAME::tutorial_lv == LEVEL2)
+        {
+            DrawRectGraph(PLAYER::posX + 100, PLAYER::posY - 50, 2088 + (blink * 214), 252, 214, 60, game.spriteHND, TRUE, FALSE);
+            DrawRectGraph(PLAYER::posX + 0, PLAYER::posY - 400, 1416, 744, 702, 300, game.spriteHND, TRUE, FALSE);
+        }
+        else if (GAME::tutorial_lv == LEVEL3)
+        {
+            DrawRectGraph(PLAYER::posX + 100, PLAYER::posY - 50, 2088 + (blink * 190), 422, 190, 50, game.spriteHND, TRUE, FALSE);
+            DrawRectGraph(PLAYER::posX + 0, PLAYER::posY - 400, 2118, 744, 702, 300, game.spriteHND, TRUE, FALSE);
+        }
+        else if (GAME::tutorial_lv == LEVEL4)
+        {
+            DrawRectGraph(PLAYER::posX + 100, PLAYER::posY - 50, 2088 + (blink * 260), 372, 260, 50, game.spriteHND, TRUE, FALSE);
+            DrawRectGraph(PLAYER::posX + 0, PLAYER::posY - 400, 1416, 1044, 702, 300, game.spriteHND, TRUE, FALSE);
+        }
+        else if (GAME::tutorial_lv == LEVEL5)
+        {
+            DrawRectGraph(PLAYER::posX + 100, PLAYER::posY - 50, 2088 + (blink * 230), 312, 230, 60, game.spriteHND, TRUE, FALSE);
+            DrawRectGraph(PLAYER::posX + 0, PLAYER::posY - 400, 2118, 1044, 702, 300, game.spriteHND, TRUE, FALSE);
+        }
     }
 
     GetDrawScreenGraph(0, 0, GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, game.zoomHND);
@@ -442,6 +452,7 @@ void GAME::end(void)
 {
     DeleteGraph(game.bgHND);
     DeleteGraph(game.spriteHND);
+    DeleteGraph(game.titleHND);
 
     PLAYER::end();
     BOSS::end();

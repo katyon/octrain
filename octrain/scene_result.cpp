@@ -31,19 +31,23 @@ void RESULT::update(void)
         break;
     case UPDATE:
         // debug
-        if (CheckHitKey(KEY_INPUT_1))
-        {
-            COMMON::nextScene = SCENE_TITLE;
-        }
-        if (CheckHitKey(KEY_INPUT_2))
+        //if (CheckHitKey(KEY_INPUT_1))
+        //{
+        //    COMMON::nextScene = SCENE_TITLE;
+        //}
+        //if (CheckHitKey(KEY_INPUT_2))
+        //{
+        //    COMMON::nextScene = SCENE_GAME;
+        //}
+        //if (CheckHitKey(KEY_INPUT_3))
+        //{
+        //    COMMON::nextScene = SCENE_RESULT;
+        //}
+        //------
+        if (Input::GetInstance()->GetALLButtonDown(PL_1))
         {
             COMMON::nextScene = SCENE_GAME;
         }
-        if (CheckHitKey(KEY_INPUT_3))
-        {
-            COMMON::nextScene = SCENE_RESULT;
-        }
-        //------
 
         break;
     }
@@ -52,12 +56,12 @@ void RESULT::update(void)
 // 描画処理
 void RESULT::draw(void)
 {
-    DrawGraph(0, 0, result.bgHND, true);
+    DrawRectGraph(0, 0, 0, 0, 1920, 1080, result.bgHND, true, false, false);
     // debug-----------
-    unsigned int  Cr = GetColor(200, 0, 0);
-    DrawFormatString(0, 0, Cr, "タイトル(1)");
-    DrawFormatString(0, 20, Cr, "ゲーム(2)");
-    DrawFormatString(0, 40, Cr, "リザルト(3)");
+    //unsigned int  Cr = GetColor(200, 0, 0);
+    //DrawFormatString(0, 0, Cr, "タイトル(1)");
+    //DrawFormatString(0, 20, Cr, "ゲーム(2)");
+    //DrawFormatString(0, 40, Cr, "リザルト(3)");
 
     //-----------------
 }

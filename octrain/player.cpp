@@ -630,6 +630,7 @@ void PLAYER::update(void)
             {
                 if (Input::GetInstance()->GetButtonDown(PL_1, XINPUT_BUTTON_A))
                 {
+                    BOSS::hp -= 10;
                     player.power += 1;
                     player.detect_close_attack1 = true;
                     BOSS::detect_close_damaged = true;
@@ -644,6 +645,7 @@ void PLAYER::update(void)
                         player.power += 2;
                         player.detect_close_attack2 = true;
                         BOSS::detect_close_damaged = true;
+                        BOSS::hp -= 10;
                     }
                 }
             }
@@ -906,37 +908,38 @@ void PLAYER::draw(void)
     // UI
     DrawRectGraph(0, 0, 2088, 64, player.init_hp, 64, GAME::spriteHND, true, false, false);
     DrawRectGraph(0, 0, 2088, 0, player.hp, 64, GAME::spriteHND, true, false, false);
+    DrawRectGraph(PLAYER::posX, PLAYER::posY, 2088, 168, GAME::spriteHND, true, false, false);
     for (int i = 0; i < player.bullet; i++)
     {
         DrawRectGraph(i * 70, 70, 2088, 188, 64, 64, GAME::spriteHND, true, false, false);
     }
 
     // debug------------------------------------------------------------------------
-    unsigned int  Cr = GetColor(200, 0, 0), Cr2 = GetColor(230, 0, 0), Cr3 = GetColor(0, 0, 230);
+    //unsigned int  Cr = GetColor(200, 0, 0), Cr2 = GetColor(230, 0, 0), Cr3 = GetColor(0, 0, 230);
 
-    DrawFormatString(600, 0, Cr, "player.hp:%d", player.hp);
-    DrawFormatString(600, 20, Cr, "player.sub_hp:%d", player.sub_hp);
-    DrawFormatString(600, 40, Cr, "bullet:%d", player.bullet);
-    DrawFormatString(600, 60, Cr, "power:%d", player.power);
-    DrawFormatString(600, 80, Cr, "hit_timer:%d", player.hit_timer);
-    DrawFormatString(600, 100, Cr, "at_timer:%d", player.at_timer);
-    DrawFormatString(600, 120, Cr, "close_at_timer:%d", player.close_at1_timer);
-    DrawFormatString(600, 140, Cr, "detect_attack:%d", player.detect_attack);
-    DrawFormatString(600, 160, Cr, "detect_close_attack1:%d", player.detect_close_attack1);
-    DrawFormatString(600, 180, Cr, "detect_close_attack2:%d", player.detect_close_attack2);
-    DrawFormatString(600, 200, Cr, "nuw_bullet:%d", player.bullet_count);
-    DrawFormatString(600, 220, Cr, "detect_damaged:%d", BOSS::detect_damaged);
+    //DrawFormatString(600, 0, Cr, "player.hp:%d", player.hp);
+    //DrawFormatString(600, 20, Cr, "player.sub_hp:%d", player.sub_hp);
+    //DrawFormatString(600, 40, Cr, "bullet:%d", player.bullet);
+    //DrawFormatString(600, 60, Cr, "power:%d", player.power);
+    //DrawFormatString(600, 80, Cr, "hit_timer:%d", player.hit_timer);
+    //DrawFormatString(600, 100, Cr, "at_timer:%d", player.at_timer);
+    //DrawFormatString(600, 120, Cr, "close_at_timer:%d", player.close_at1_timer);
+    //DrawFormatString(600, 140, Cr, "detect_attack:%d", player.detect_attack);
+    //DrawFormatString(600, 160, Cr, "detect_close_attack1:%d", player.detect_close_attack1);
+    //DrawFormatString(600, 180, Cr, "detect_close_attack2:%d", player.detect_close_attack2);
+    //DrawFormatString(600, 200, Cr, "nuw_bullet:%d", player.bullet_count);
+    //DrawFormatString(600, 220, Cr, "detect_damaged:%d", BOSS::detect_damaged);
 
-    if (player.detect_reverse == true)
-    {
-        DrawBox(player.posX + 88, player.posY + 52, player.posX + PL_WIDTH - 83, player.posY + PL_HEIGHT - 31, Cr2, false);
-        DrawBox(player.posX + 88 - CLOSE_RANGE, player.posY + 52, player.posX + PL_WIDTH - 83 + CLOSE_RANGE, player.posY + PL_HEIGHT - 31, Cr3, false);
-    }
-    else
-    {
-        DrawBox(player.posX + 24, player.posY + 52, player.posX + PL_WIDTH - 149, player.posY + PL_HEIGHT - 31, Cr2, false);
-        DrawBox(player.posX + 24 - CLOSE_RANGE, player.posY + 52, player.posX + PL_WIDTH - 149 + CLOSE_RANGE, player.posY + PL_HEIGHT - 31, Cr3, false);
-    }
+    //if (player.detect_reverse == true)
+    //{
+    //    DrawBox(player.posX + 88, player.posY + 52, player.posX + PL_WIDTH - 83, player.posY + PL_HEIGHT - 31, Cr2, false);
+    //    DrawBox(player.posX + 88 - CLOSE_RANGE, player.posY + 52, player.posX + PL_WIDTH - 83 + CLOSE_RANGE, player.posY + PL_HEIGHT - 31, Cr3, false);
+    //}
+    //else
+    //{
+    //    DrawBox(player.posX + 24, player.posY + 52, player.posX + PL_WIDTH - 149, player.posY + PL_HEIGHT - 31, Cr2, false);
+    //    DrawBox(player.posX + 24 - CLOSE_RANGE, player.posY + 52, player.posX + PL_WIDTH - 149 + CLOSE_RANGE, player.posY + PL_HEIGHT - 31, Cr3, false);
+    //}
 
     for (int i = 0; i < PL_BULLET_MAX; i++)
     {

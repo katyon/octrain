@@ -147,8 +147,8 @@ void BULLET::pl_update(BULLET* p)
 
 void BULLET::judgeTurningDirection(BULLET* p)
 {
-    p->posX += p->fcos[p->angle] * p->speed*3;
-    p->posY -= p->fsin[p->angle] * p->speed*3;
+    p->posX += p->fcos[p->angle] * p->speed * 3;
+    p->posY -= p->fsin[p->angle] * p->speed * 3;
 
     //弾からプレイヤーへのベクトル(ワールド基準のグラフ、→がxで↓がyのいつもの)
     float world_x = PLAYER::pivot_posX - p->posX;
@@ -255,22 +255,22 @@ void BULLET::boss_draw(BULLET* p, int pattern_num)
     switch (pattern_num)
     {
     case BOSS::PATTERN::N_Diffusion:
-        DrawRectGraphF(p->posX, p->posY, 2088, 188, 64, 64, GAME::spriteHND, true, false, false);
+        DrawRectGraphF(p->posX, p->posY, 2088 + 64, 188, 64, 64, GAME::spriteHND, true, false, false);
         break;
     case BOSS::PATTERN::N_Homing:
-        DrawRectGraphF(p->posX, p->posY, 2088, 188, 64, 64, GAME::spriteHND, true, false, false);
+        DrawRectGraphF(p->posX, p->posY, 2088 + 64, 188, 64, 64, GAME::spriteHND, true, false, false);
         break;
     case BOSS::PATTERN::N_Column:
-        DrawRectGraphF(p->posX, p->posY, 2088, 188, 64, 64, GAME::spriteHND, true, false, false);
+        DrawRectGraphF(p->posX, p->posY, 2088 + 64, 188, 64, 64, GAME::spriteHND, true, false, false);
         break;
     case BOSS::PATTERN::SPK_1:
-        DrawRectGraphF(p->posX, p->posY, 2088, 188, 64, 64, GAME::spriteHND, true, false, false);
+        DrawRectGraphF(p->posX, p->posY, 2088 + 64, 188, 64, 64, GAME::spriteHND, true, false, false);
         break;
     case BOSS::PATTERN::SPK_2:
-        DrawRectGraphF(p->posX, p->posY, 2088, 188, 64, 64, GAME::spriteHND, true, false, false);
+        DrawRectGraphF(p->posX, p->posY, 2088 + 64, 188, 64, 64, GAME::spriteHND, true, false, false);
         break;
     case BOSS::PATTERN::SPK_3:
-        DrawRectGraphF(p->posX, p->posY, 2088, 188, 64, 64, GAME::spriteHND, true, false, false);
+        DrawRectGraphF(p->posX, p->posY, 2088 + 64, 188, 64, 64, GAME::spriteHND, true, false, false);
         break;
     }
 }

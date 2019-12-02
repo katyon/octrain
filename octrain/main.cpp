@@ -16,10 +16,10 @@ int COMMON::nextScene = 0;
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
     // ウインドウモードで起動
-    ChangeWindowMode(TRUE);
+    //ChangeWindowMode(TRUE);
 
     // フルスクリーンモードで起動
-    //ChangeWindowMode(FALSE);
+    ChangeWindowMode(FALSE);
 
     // ゲーム画面の解像度を設定(32ビットカラー(フルカラー))
     SetGraphMode(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, 32);
@@ -28,12 +28,32 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     SetBackgroundColor(0, 0, 0);
 
     // ウインドウのタイトルを設定
-    SetMainWindowText("octrain");
+    SetMainWindowText("sougetu");
 
     // ブレンドモードの設定(ノーブレンド)
     SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
     // ゲームシーンの設定
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     COMMON::curScene = SCENE_GAME;
     COMMON::nextScene = SCENE_GAME;
 
@@ -45,6 +65,27 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     GAME::init();
 
     // フォントデータの読み込み
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     common.font = CreateFontToHandle("GauFontLoveRocketNeo", 70, 1, DX_FONTTYPE_ANTIALIASING);
 
     // 描画先を裏画面にする

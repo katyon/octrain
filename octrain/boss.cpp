@@ -82,120 +82,120 @@ void BOSS::init(void)
 void BOSS::update(void)
 {
     // debug------------------------
-#pragma region RightThumb
-    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Up))
-    {
-        boss.posY -= boss.speed;
-    }
-    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Before_Upper_Right))
-    {
-        boss.posX += boss.speed / ROOT5;
-        boss.posY -= boss.speed / ROOT5 * 2;
-    }
-    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Upper_Right))
-    {
-        boss.posX += boss.speed / ROOT2;
-        boss.posY -= boss.speed / ROOT2;
-    }
-    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::After_Upper_Right))
-    {
-        boss.posX += boss.speed / ROOT5 * 2;
-        boss.posY -= boss.speed / ROOT5;
-    }
-    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Right))
-    {
-        boss.posX += boss.speed;
-    }
-    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Before_Lower_Right))
-    {
-        boss.posX += boss.speed / ROOT5 * 2;
-        boss.posY += boss.speed / ROOT5;
-    }
-    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Lower_Right))
-    {
-        boss.posX += boss.speed / ROOT2;
-        boss.posY += boss.speed / ROOT2;
-    }
-    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::After_Lower_Right))
-    {
-        boss.posX += boss.speed / ROOT5;
-        boss.posY += boss.speed / ROOT5 * 2;
-    }
-    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Down))
-    {
-        boss.posY += boss.speed;
-    }
-    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Before_Lower_Left))
-    {
-        boss.posX -= boss.speed / ROOT5;
-        boss.posY += boss.speed / ROOT5 * 2;
-    }
-    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Lower_Left))
-    {
-        boss.posX -= boss.speed / ROOT2;
-        boss.posY += boss.speed / ROOT2;
-    }
-    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::After_Lower_Left))
-    {
-        boss.posX -= boss.speed / ROOT5 * 2;
-        boss.posY += boss.speed / ROOT5;
-    }
-    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Left))
-    {
-        boss.posX -= boss.speed;
-    }
-    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Before_Upper_Left))
-    {
-        boss.posX -= boss.speed / ROOT5 * 2;
-        boss.posY -= boss.speed / ROOT5;
-    }
-    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Upper_Left))
-    {
-        boss.posX -= boss.speed / ROOT2;
-        boss.posY -= boss.speed / ROOT2;
-    }
-    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::After_Upper_Left))
-    {
-        boss.posX -= boss.speed / ROOT5;
-        boss.posY -= boss.speed / ROOT5 * 2;
-    }
-    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Little_Up))
-    {
-        boss.posY -= boss.speed / 3;
-    }
-    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Little_Right))
-    {
-        boss.posX += boss.speed / 3;
-    }
-    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Little_Down))
-    {
-        boss.posY += boss.speed / 3;
-    }
-    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Little_Left))
-    {
-        boss.posX -= boss.speed / 3;
-    }
-    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Little_Upper_Right))
-    {
-        boss.posX += boss.speed / ROOT2 / 3;
-        boss.posY -= boss.speed / ROOT2 / 3;
-    }
-    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Little_Lower_Right))
-    {
-        boss.posX += boss.speed / ROOT2 / 3;
-        boss.posY += boss.speed / ROOT2 / 3;
-    }
-    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Little_Lower_Left))
-    {
-        boss.posX -= boss.speed / ROOT2 / 3;
-        boss.posY += boss.speed / ROOT2 / 3;
-    }
-    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Little_Upper_Left))
-    {
-        boss.posX -= boss.speed / ROOT2 / 3;
-        boss.posY -= boss.speed / ROOT2 / 3;
-    }
-#pragma endregion
+//#pragma region RightThumb
+//    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Up))
+//    {
+//        boss.posY -= boss.speed;
+//    }
+//    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Before_Upper_Right))
+//    {
+//        boss.posX += boss.speed / ROOT5;
+//        boss.posY -= boss.speed / ROOT5 * 2;
+//    }
+//    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Upper_Right))
+//    {
+//        boss.posX += boss.speed / ROOT2;
+//        boss.posY -= boss.speed / ROOT2;
+//    }
+//    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::After_Upper_Right))
+//    {
+//        boss.posX += boss.speed / ROOT5 * 2;
+//        boss.posY -= boss.speed / ROOT5;
+//    }
+//    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Right))
+//    {
+//        boss.posX += boss.speed;
+//    }
+//    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Before_Lower_Right))
+//    {
+//        boss.posX += boss.speed / ROOT5 * 2;
+//        boss.posY += boss.speed / ROOT5;
+//    }
+//    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Lower_Right))
+//    {
+//        boss.posX += boss.speed / ROOT2;
+//        boss.posY += boss.speed / ROOT2;
+//    }
+//    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::After_Lower_Right))
+//    {
+//        boss.posX += boss.speed / ROOT5;
+//        boss.posY += boss.speed / ROOT5 * 2;
+//    }
+//    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Down))
+//    {
+//        boss.posY += boss.speed;
+//    }
+//    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Before_Lower_Left))
+//    {
+//        boss.posX -= boss.speed / ROOT5;
+//        boss.posY += boss.speed / ROOT5 * 2;
+//    }
+//    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Lower_Left))
+//    {
+//        boss.posX -= boss.speed / ROOT2;
+//        boss.posY += boss.speed / ROOT2;
+//    }
+//    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::After_Lower_Left))
+//    {
+//        boss.posX -= boss.speed / ROOT5 * 2;
+//        boss.posY += boss.speed / ROOT5;
+//    }
+//    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Left))
+//    {
+//        boss.posX -= boss.speed;
+//    }
+//    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Before_Upper_Left))
+//    {
+//        boss.posX -= boss.speed / ROOT5 * 2;
+//        boss.posY -= boss.speed / ROOT5;
+//    }
+//    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Upper_Left))
+//    {
+//        boss.posX -= boss.speed / ROOT2;
+//        boss.posY -= boss.speed / ROOT2;
+//    }
+//    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::After_Upper_Left))
+//    {
+//        boss.posX -= boss.speed / ROOT5;
+//        boss.posY -= boss.speed / ROOT5 * 2;
+//    }
+//    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Little_Up))
+//    {
+//        boss.posY -= boss.speed / 3;
+//    }
+//    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Little_Right))
+//    {
+//        boss.posX += boss.speed / 3;
+//    }
+//    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Little_Down))
+//    {
+//        boss.posY += boss.speed / 3;
+//    }
+//    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Little_Left))
+//    {
+//        boss.posX -= boss.speed / 3;
+//    }
+//    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Little_Upper_Right))
+//    {
+//        boss.posX += boss.speed / ROOT2 / 3;
+//        boss.posY -= boss.speed / ROOT2 / 3;
+//    }
+//    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Little_Lower_Right))
+//    {
+//        boss.posX += boss.speed / ROOT2 / 3;
+//        boss.posY += boss.speed / ROOT2 / 3;
+//    }
+//    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Little_Lower_Left))
+//    {
+//        boss.posX -= boss.speed / ROOT2 / 3;
+//        boss.posY += boss.speed / ROOT2 / 3;
+//    }
+//    if (Input::GetInstance()->GetRightThumb(PL_1, THUMB::Little_Upper_Left))
+//    {
+//        boss.posX -= boss.speed / ROOT2 / 3;
+//        boss.posY -= boss.speed / ROOT2 / 3;
+//    }
+//#pragma endregion
 
     flashing_timer++;
     flash = sinf(flashing_timer);
@@ -673,6 +673,10 @@ void BOSS::draw(void)
         DrawRectGraphF(boss.posX, boss.posY, 1416 + BOSS_WIDTH * (GAME::timer / 7 % 4), 0, BOSS_WIDTH, BOSS_HEIGHT, GAME::spriteHND, true, false, false);
     }
 
+    if (boss.hp < 0)
+    {
+        COMMON::nextScene = SCENE_RESULT;
+    }
     //Mg_debug(hit effect)-------------
     flashing_timer++;
     flash = sinf(flashing_timer * 0.175f) - 0.1;
@@ -689,6 +693,53 @@ void BOSS::draw(void)
             boss.once_close_damaged = true;
         }
         SetDrawBlendMode(DX_BLENDMODE_ALPHA, 180);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         DrawRotaGraph3(boss.posX + BOSS_WIDTH / 2, boss.posY + BOSS_HEIGHT / 2, 100, 25, 5, flash, rad, effect_HND, TRUE);
         //DrawRotaGraph3(boss.posX + BOSS_WIDTH / 2, boss.posY + BOSS_HEIGHT / 2, 100, 25, 3, flash, rad + 50, effect_HND, TRUE);
         SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
@@ -734,11 +785,11 @@ void BOSS::draw(void)
     DrawRectGraph(GAME_SCREEN_WIDTH / 2, 0, 2088, 64, BOSS_HP, 64, GAME::spriteHND, true, false, false);
     DrawRectGraph(GAME_SCREEN_WIDTH / 2 + BOSS_HP - boss.hp, 0, 2088, 0, boss.hp, 64, GAME::spriteHND, true, false, false);
     //debug-----
-    unsigned int  Cr = GetColor(200, 0, 0);
-    DrawFormatString(200, 60, Cr, "boss.detect_damaged:%d", boss.detect_damaged);
-    DrawFormatString(200, 80, Cr, "boss.detect_close_damaged:%d", boss.detect_close_damaged);
+    //unsigned int  Cr = GetColor(200, 0, 0);
+    //DrawFormatString(200, 60, Cr, "boss.detect_damaged:%d", boss.detect_damaged);
+    //DrawFormatString(200, 80, Cr, "boss.detect_close_damaged:%d", boss.detect_close_damaged);
 
-    DrawBox(boss.posX, boss.posY, boss.posX + BOSS_WIDTH, boss.posY + BOSS_HEIGHT, GetColor(0, 200, 0), false);
+    //DrawBox(boss.posX, boss.posY, boss.posX + BOSS_WIDTH, boss.posY + BOSS_HEIGHT, GetColor(0, 200, 0), false);
     //--------
 
     // SPK
