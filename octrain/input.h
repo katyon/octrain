@@ -60,6 +60,8 @@ private:
     };
 
 protected:
+
+
     Input() {};
     virtual ~Input() {};
     static Input* instance;

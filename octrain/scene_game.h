@@ -36,6 +36,7 @@ private:
     int bgHND = 0;
     int zoomHND = 0;
     int efHND = 0;
+    int titleHND = 0;
 
     static int bgmHND;
     static int clearHND0;
